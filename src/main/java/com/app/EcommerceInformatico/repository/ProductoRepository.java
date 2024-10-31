@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import com.app.EcommerceInformatico.model.Producto;
 @Repository
 public interface ProductoRepository extends JpaRepository<Producto, Long> {
-
+	public Boolean existsByNombre(String nombre);
 	public List<Producto> findByEstadoTrue();
 
 }

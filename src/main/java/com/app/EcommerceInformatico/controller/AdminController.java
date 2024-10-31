@@ -143,18 +143,27 @@ public class AdminController {
 		producto.setImagen(imageName);
 		producto.setDescuento(0);
 		producto.setPrecioDescuento(producto.getPrecio());
-		Producto saveProduct = productoService.saveProducto(producto);
-		if (ObjectUtils.isEmpty(saveProduct)) {
-			session.setAttribute("errorMsg", "Error al guardar el producto");
+		
+		Boolean existProduct = productoService.existProducto(producto.getNombre());
+		if (existProduct) {
+			
+			session.setAttribute("errorMsg", "El producto ya existe");
 		} else {
-			if (file != null && !file.isEmpty()) {
-				File saveFile = new ClassPathResource("static/img").getFile();
-				Path path = Paths.get(saveFile.getAbsolutePath() + File.separator + "producto_img" + File.separator
-						+ file.getOriginalFilename());
-				Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+			Producto saveProduct = productoService.saveProducto(producto);
+			if (ObjectUtils.isEmpty(saveProduct)) {
+				session.setAttribute("errorMsg", "Error al guardar el producto");
+			} else {
+				if (file != null && !file.isEmpty()) {
+					File saveFile = new ClassPathResource("static/img").getFile();
+					Path path = Paths.get(saveFile.getAbsolutePath() + File.separator + "producto_img" + File.separator
+							+ file.getOriginalFilename());
+					Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+				}
+				session.setAttribute("succMsg", "Producto guardado con éxito");
 			}
-			session.setAttribute("succMsg", "Producto guardado con éxito");
+
 		}
+
 		return "redirect:/admin/productos";
 	}
 
@@ -180,16 +189,24 @@ public class AdminController {
 	@PostMapping("/updateProducto")
 	public String updateProducto(@ModelAttribute Producto producto, @RequestParam MultipartFile file,
 			HttpSession session) throws IOException {
-		if (producto.getDescuento() < 0 || producto.getDescuento() > 100) {
-			session.setAttribute("errorMsg", "El descuento debe estar entre 0 y 100");
+		
+		Producto oldProducto = productoService.getProductoById(producto.getId());
+		Boolean existProduct = productoService.existProducto(producto.getNombre());
+		if (existProduct && !oldProducto.getNombre().equals(producto.getNombre())) {
+			session.setAttribute("errorMsg", "El producto ya existe");
 		} else {
-			Producto updateProducto = productoService.updateProducto(producto, file);
-			if (!ObjectUtils.isEmpty(updateProducto)) {
-				session.setAttribute("succMsg", "Actualizado con éxito");
-			} else {
-				session.setAttribute("errorMsg", "no actualizado! error interno del servidor");
-			}
 
+			if (producto.getDescuento() < 0 || producto.getDescuento() > 100) {
+				session.setAttribute("errorMsg", "El descuento debe estar entre 0 y 100");
+			} else {
+				Producto updateProducto = productoService.updateProducto(producto, file);
+				if (!ObjectUtils.isEmpty(updateProducto)) {
+					session.setAttribute("succMsg", "Actualizado con éxito");
+				} else {
+					session.setAttribute("errorMsg", "no actualizado! error interno del servidor");
+				}
+
+			}
 		}
 
 		return "redirect:/admin/editarProducto/" + producto.getId();

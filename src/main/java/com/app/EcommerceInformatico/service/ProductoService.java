@@ -13,5 +13,6 @@ public interface ProductoService {
     public Boolean deleteProducto(Long id);
     public Producto updateProducto(Producto producto, MultipartFile imagen);
     public List<Producto> getAllActiveProducto();
+    public Boolean existProducto(String nombre);
 
 }

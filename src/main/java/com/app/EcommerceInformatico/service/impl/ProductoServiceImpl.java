@@ -100,4 +100,10 @@ public class ProductoServiceImpl implements ProductoService {
 		return productos;
 	}
 
+	@Override
+	public Boolean existProducto(String nombre) {
+		Boolean exist = productoRepository.existsByNombre(nombre);
+		return exist;
+	}
+
 }
