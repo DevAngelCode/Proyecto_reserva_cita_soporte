@@ -50,4 +50,10 @@ public class CategoriaServiceImpl implements CategoriaService {
 		return categoria;
 	}
 
+	@Override
+	public List<Categoria> getAllActiveCategoria() {
+		List<Categoria> categorias = categoriaRepository.findByEstadoTrue();
+		return categorias;
+	}
+
 }

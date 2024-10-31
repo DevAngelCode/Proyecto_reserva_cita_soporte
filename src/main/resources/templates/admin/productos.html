@@ -1,0 +1,187 @@
+
+<!DOCTYPE html>
+<html lang="es" xmlns:th="~http://www.thymeleaf.org"
+	th:replace="~{admin/base_admin::Layout(~{::section})}">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+	<section>
+		<main class="mr-3">
+			<div class="container-fluid mt-3">
+				<div class="row">
+					<div class="d-flex">
+						<button class="btn-add-product" data-bs-toggle="modal"
+							data-bs-target="#exampleModal">Agregar Productos</button>
+
+						<div class="search-bar">
+							<input placeholder="Buscar:" type="text" />
+						</div>
+
+					</div>
+				</div>
+				<th:block th:if="${session.succMsg}">
+					<p class="text-success fw-bold">[[${session.succMsg}]]</p>
+					<th:block th:text="${@commomServiceImpl.removeSessionMessage()}"></th:block>
+				</th:block>
+				<th:block th:if="${session.errorMsg}">
+					<p class="text-danger fw-bold">[[${session.errorMsg}]]</p>
+					<th:block th:text="${@commomServiceImpl.removeSessionMessage()}"></th:block>
+
+				</th:block>
+				<table class="table tabla">
+					<thead>
+						<tr>
+							<th scope="col">ID</th>
+							<th scope="col">Imagen</th>
+							<th scope="col">Nombre</th>
+							<th scope="col">Categoría</th>
+							<th scope="col">Descripción</th>
+							<th scope="col">Precio</th>
+							<th scope="col">Descuento</th>
+							<th scope="col">Precio con Descuento</th>
+							<th scope="col">Stock</th>
+							<th scope="col">Estado</th>
+							<th scope="col">Acción</th>
+						</tr>
+					</thead>
+					<tbody class="table-group-divider">
+						<tr th:each="pro, p : ${productos}">
+							<th scope="row">[[${p.count}]]</th>
+							<td><img th:src="@{'/img/producto_img/'+${pro.imagen}}"
+								class="img-fluid" width="70px" /></td>
+
+							<td>[[${pro.nombre}]]</td>
+							<td>[[${pro.categoria}]]</td>
+							<td>[[${pro.descripcion}]]</td>
+							<td>[[${pro.precio}]]</td>
+							<td>[[${pro.descuento}]]</td>
+							<td>[[${pro.precioDescuento}]]</td>
+							<td>[[${pro.stock}]]</td>
+							<td>[[${pro.estado}]]</td>
+
+
+							<td>
+								<div class="dropdown-center">
+									<button class="btn dropdown-toggle " type="button"
+										data-bs-toggle="dropdown" aria-expanded="false">
+										Opciones</button>
+									<ul class="dropdown-menu">
+										<li><a class="dropdown-item"
+											th:href="@{'/admin/editarProducto/'+${pro.id}}">Editar</a></li>
+										<li><a class="dropdown-item"
+											th:href="@{'/admin/eliminarProducto/'+${pro.id}}">Eliminar</a></li>
+									</ul>
+								</div>
+							</td>
+						</tr>
+
+					</tbody>
+				</table>
+			</div>
+			<!-- Modal - ADD PRODUCT-->
+			<div class="modal fade" id="exampleModal" tabindex="-1"
+				aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<div
+					class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+					<div class="modal-content">
+						<form action="/admin/saveProducto" method="post"
+							enctype="multipart/form-data">
+							<div class="modal-header">
+								<h1 class="modal-title fs-5" id="exampleModalLabel">Agregar
+									Producto</h1>
+								<button type="button" class="btn-close" data-bs-dismiss="modal"
+									aria-label="Close"></button>
+							</div>
+							<div class="modal-body">
+								<!-- Nombre -->
+								<div class="mb-3">
+									<label for="productName" class="form-label">Nombre del
+										Producto</label> <input type="text" class="form-control"
+										id="productName" name="nombre"
+										placeholder="Nombre del Producto" required>
+								</div>
+								<!-- Categoría -->
+								<div class="mb-3">
+									<label for="productStatus" class="form-label">Categoria</label>
+									<select class="form-select" id="productStatus" name="categoria">
+
+										<option th:each="cat:${categoria}">[[${cat.nombre}]]</option>
+
+									</select>
+								</div>
+								<!-- Descripción -->
+								<div class="mb-3">
+									<label for="productDescription" class="form-label">Descripción</label>
+									<textarea class="form-control" id="productDescription"
+										name="descripcion" placeholder="Descripción del Producto"
+										required></textarea>
+								</div>
+								<div class="row">
+
+									<!-- Precio -->
+									<div class="mb-3 col">
+										<label for="productPrice" class="form-label">Precio</label> <input
+											type="number" class="form-control" id="productPrice"
+											name="precio" placeholder="Precio del Producto" required>
+									</div>
+									<!-- Descuento -->
+<!-- 									<div class="mb-3 col"> -->
+<!-- 										<label for="productDiscount" class="form-label">Descuento</label> -->
+<!-- 										<input type="number" class="form-control" id="productDiscount" -->
+<!-- 											name="descuento" placeholder="Descuento del Producto" -->
+<!-- 											required> -->
+<!-- 									</div> -->
+								
+
+									<!-- Precio con Descuento -->
+<!-- 									<div class="mb-3 col"> -->
+<!-- 										<label for="productDiscountPrice" class="form-label">Precio -->
+<!-- 											con Descuento</label> <input type="number" class="form-control" -->
+<!-- 											id="productDiscountPrice" name="precioDescuento" -->
+<!-- 											placeholder="Precio con Descuento del Producto" readonly> -->
+<!-- 									</div> -->
+
+
+									<!-- Stock -->
+									<div class="mb-3 col">
+										<label for="productStock" class="form-label">Stock</label> <input
+											type="number" class="form-control" id="productStock"
+											name="stock" placeholder="Stock del Producto" required>
+									</div>
+								</div>
+								<!-- Estado -->
+								<div class="mb-3">
+									<label for="productStatus" class="form-label">Estado</label> <select
+										class="form-select" id="productStatus" name="estado">
+										<option value="true">Activo</option>
+										<option value="false">Inactivo</option>
+									</select>
+								</div>
+								<!-- Imagen -->
+								<div class="mb-3">
+									<label for="productImage" class="form-label">Imagen del
+										Producto</label> <input type="file" class="form-control"
+										id="productImage" name="file">
+								</div>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary"
+									data-bs-dismiss="modal">Cerrar</button>
+								<button type="submit" class="btn btn-primary">Guardar
+									Producto</button>
+
+							</div>
+
+
+						</form>
+					</div>
+				</div>
+			</div>
+
+		</main>
+	</section>
+</body>
+</html>

@@ -10,5 +10,6 @@ public interface CategoriaService {
 	public List<Categoria> getAllCategoria();
 	public Boolean deleteCategoria(Long id);
 	public Categoria getCategoriaById(Long id);
+	public List<Categoria> getAllActiveCategoria();
 
 }

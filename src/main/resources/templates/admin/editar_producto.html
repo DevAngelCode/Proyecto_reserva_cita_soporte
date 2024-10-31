@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="~http://www.thymeleaf.org"
+	th:replace="~{admin/base_admin::Layout(~{::section})}">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<section>
+
+		<div class="container mt-5">
+			<h1>Editar Producto</h1>
+			<th:block th:if="${session.succMsg}">
+				<p class="text-success fw-bold">[[${session.succMsg}]]</p>
+				<th:block th:text="${@commomServiceImpl.removeSessionMessage()}"></th:block>
+			</th:block>
+			<th:block th:if="${session.errorMsg}">
+				<p class="text-danger fw-bold">[[${session.errorMsg}]]</p>
+				<th:block th:text="${@commomServiceImpl.removeSessionMessage()}"></th:block>
+
+			</th:block>
+			<form action="/admin/updateProducto" method="post"
+				enctype="multipart/form-data">
+				<!-- ID (hidden) -->
+				<input type="hidden" id="categoryId" name="id"
+					th:value="${producto.id}">
+				<!-- Nombre -->
+				<div class="mb-3">
+					<label for="productName" class="form-label">Nombre del
+						Producto</label> <input type="text" class="form-control" id="productName"
+						name="nombre" th:value="${producto.nombre}"
+						placeholder="Nombre del Producto" required>
+				</div>
+				<!-- Categoría -->
+				<div class="mb-3">
+					<label for="productStatus" class="form-label">Categoria</label> <select
+						class="form-select" id="productStatus" name="categoria">
+						<!-- Opción predeterminada solo si no hay categoría seleccionada -->
+						<option th:if="${producto.categoria == null}" value="">Seleccionar...</option>
+						<!-- Lista de opciones de categoría -->
+						<option th:each="cat : ${categoria}" 
+							th:text="${cat.nombre}"
+							th:selected="${producto.categoria == cat.nombre}"></option>
+					</select>
+				</div>
+
+				<!-- Descripción -->
+				<div class="mb-3">
+					<label for="productDescription" class="form-label">Descripción</label>
+					<textarea class="form-control" id="productDescription"
+						name="descripcion" placeholder="Descripción del Producto" required>[[${producto.descripcion}]]</textarea>
+				</div>
+				<div class="row">
+
+					<!-- Precio -->
+					<div class="mb-3 col">
+						<label for="productPrice" class="form-label">Precio</label> <input
+							type="number" class="form-control" id="productPrice"
+							name="precio" th:value="${producto.precio}"
+							placeholder="Precio del Producto" required>
+					</div>
+					<!-- 					Descuento -->
+					<div class="mb-3 col">
+						<label for="productDiscount" class="form-label">Descuento</label>
+						<input type="number" class="form-control" id="productDiscount"
+							name="descuento" th:value="${producto.descuento}"
+							placeholder="Descuento del Producto" required>
+					</div>
+				</div>
+				<div class="row">
+
+
+					<!-- Precio con Descuento -->
+					<div class="mb-3 col">
+						<label for="productDiscountPrice" class="form-label">Precio
+							con Descuento</label> <input type="number" class="form-control"
+							id="productDiscountPrice" name="precioDescuento"
+							th:value="${producto.precioDescuento}"
+							placeholder="Precio con Descuento del Producto" readonly>
+					</div>
+
+
+					<!-- Stock -->
+					<div class="mb-3 col">
+						<label for="productStock" class="form-label">Stock</label> <input
+							type="number" class="form-control" id="productStock" name="stock"
+							th:value="${producto.stock}" placeholder="Stock del Producto"
+							required>
+					</div>
+				</div>
+				<!-- Estado -->
+				<div class="mb-3">
+					<label for="productStatus" class="form-label">Estado</label> <select
+						class="form-select" id="productStatus" name="estado">
+						<option value="true" th:selected="${producto.estado==true}">Activo</option>
+						<option value="false" th:selected="${producto.estado==false}">Inactivo</option>
+					</select>
+				</div>
+				<!-- Imagen -->
+				<div class="mt-1 text-center">
+					<img th:src="@{'/img/producto_img/'+${producto.imagen}}" width="300px"
+						height="300px" />
+				</div>
+				<div class="mb-3">
+					<label for="productImage" class="form-label">Imagen del
+						Producto</label> <input type="file" class="form-control" id="productImage"
+						name="file">
+				</div>
+				
+				<button type="submit" class="btn btn-primary">Actualizar</button>
+				<a href="/admin/productos" class="btn btn-secondary">Volver</a>
+			</form>
+		</div>
+	</section>
+</body>
+</html>
