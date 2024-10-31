@@ -1,14 +1,21 @@
 package com.app.EcommerceInformatico.controller;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.ObjectUtils;
@@ -20,8 +27,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.app.EcommerceInformatico.excel.CategoriasExcel;
+import com.app.EcommerceInformatico.excel.ProductosExcel;
 import com.app.EcommerceInformatico.model.Categoria;
 import com.app.EcommerceInformatico.model.Producto;
+import com.app.EcommerceInformatico.pdf.CategoriasPdf;
+import com.app.EcommerceInformatico.pdf.ProductosPdf;
 import com.app.EcommerceInformatico.service.CategoriaService;
 import com.app.EcommerceInformatico.service.ProductoService;
 
@@ -34,6 +45,7 @@ public class AdminController {
 	private CategoriaService categoriaService;
 	@Autowired
 	private ProductoService productoService;
+	
 
 	@GetMapping
 	public String home() {
@@ -135,7 +147,39 @@ public class AdminController {
 		}
 		return "redirect:/admin/categorias";
 	}
+	@GetMapping("/ExportarCategoriasPdf")
+	public ResponseEntity<InputStreamResource> exportarCategoriasPdf() {
+	    List<Categoria> categorias = categoriaService.getAllCategoria();
+	    ByteArrayInputStream bis = CategoriasPdf.categoriesReport(categorias);
 
+	    if (bis == null) {
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+	    }
+
+	    HttpHeaders headers = new HttpHeaders();
+	    headers.add("Content-Disposition", "inline; filename=categorias.pdf");
+
+	    return ResponseEntity.ok().headers(headers).contentType(MediaType.APPLICATION_PDF)
+	            .body(new InputStreamResource(bis));
+	}
+	
+	@GetMapping("/ExportarCategoriasExcel")
+	public ResponseEntity<InputStreamResource> exportarCategoriasExcel() {
+	    List<Categoria> categorias = categoriaService.getAllCategoria();
+	    ByteArrayInputStream bis = CategoriasExcel.categoriesReport(categorias);
+
+	    if (bis == null) {
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+	    }
+
+	    HttpHeaders headers = new HttpHeaders();
+	    headers.add("Content-Disposition", "attachment; filename=categorias.xlsx");
+
+	    return ResponseEntity.ok().headers(headers).contentType(MediaType.APPLICATION_OCTET_STREAM)
+	            .body(new InputStreamResource(bis));
+	}
+	
+	
 	@PostMapping("/saveProducto")
 	public String saveProducto(@ModelAttribute Producto producto, @RequestParam MultipartFile file, HttpSession session)
 			throws IOException {
@@ -211,5 +255,40 @@ public class AdminController {
 
 		return "redirect:/admin/editarProducto/" + producto.getId();
 	}
+	@GetMapping("/ExportarProductosPdf")
+	public ResponseEntity<InputStreamResource> exportarProductosPdf() {
+		List<Producto> productos = productoService.getAllProducto();
+		ByteArrayInputStream bis = ProductosPdf.productsReport(productos);
+
+		if (bis == null) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+		}
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-Disposition", "inline; filename=productos.pdf");
+
+		return ResponseEntity.ok().headers(headers).contentType(MediaType.APPLICATION_PDF)
+				.body(new InputStreamResource(bis));
+	    
+	}
+	
+	@GetMapping("/ExportarProductosExcel")
+	 public ResponseEntity<InputStreamResource> exportarProductosExcel() {
+        List<Producto> productos = productoService.getAllProducto();
+        ByteArrayInputStream bis = ProductosExcel.productosToExcel(productos);
+
+        if (bis == null) {
+            return ResponseEntity.internalServerError().build();
+        }
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Disposition", "attachment; filename=productos.xlsx");
+
+        return ResponseEntity.ok()
+                .headers(headers)
+                .contentType(MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
+                .body(new InputStreamResource(bis));
+    }
+	
 
 }
