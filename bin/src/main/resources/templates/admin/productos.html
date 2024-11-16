@@ -1,11 +1,11 @@
+
 <!DOCTYPE html>
-<html lang="es" xmlns:th="~http://www.thymeleaf.org" th:replace="~{admin/base_admin::Layout(~{::section})}">
-
+<html lang="es" xmlns:th="~http://www.thymeleaf.org"
+	th:replace="~{admin/base_admin::Layout(~{::section})}">
 <head>
-	<meta charset="UTF-8">
-	<title>Insert title here</title>
+<meta charset="UTF-8">
+<title>Insert title here</title>
 </head>
-
 <body>
 
 	<section>
@@ -13,21 +13,18 @@
 			<div class="container-fluid mt-3">
 				<div class="row">
 					<div class="d-flex">
-						<button class="btn-add-product" data-bs-toggle="modal" data-bs-target="#exampleModal">Agregar
-							Productos</button>
+						<button class="btn-add-product" data-bs-toggle="modal"
+							data-bs-target="#exampleModal">Agregar Productos</button>
 
-						<div class="search-bar mx-2">
+						<div class="search-bar">
 							<input placeholder="Buscar:" type="text" />
 						</div>
 
 
 						<div class="d-flex">
-							<div class="mx-1">
-								<a href="/admin/ExportarProductosPdf" class="btn btn-primary">Exportar PDF</a>
-							</div>
-							<div class="mx-1">
-								<a href="/admin/ExportarProductosExcel" class="btn btn-success">Exportar Excel</a>
-							</div>
+							<a href="/admin/ExportarProductosPdf" class="btn btn-primary">Exportar
+								PDF</a> <a href="/admin/ExportarProductosExcel"
+								class="btn btn-success">Exportar Excel</a>
 
 						</div>
 					</div>
@@ -59,8 +56,8 @@
 						<tbody class="table-group-divider">
 							<tr th:each="pro, p : ${productos}">
 								<th scope="row">[[${p.count}]]</th>
-								<td><img th:src="@{'/img/producto_img/'+${pro.imagen}}" class="img-fluid"
-										width="70px" /></td>
+								<td><img th:src="@{'/img/producto_img/'+${pro.imagen}}"
+									class="img-fluid" width="70px" /></td>
 
 								<td>[[${pro.nombre}]]</td>
 								<td>[[${pro.categoria}]]</td>
@@ -74,14 +71,14 @@
 
 								<td>
 									<div class="dropdown-center">
-										<button class="btn dropdown-toggle " type="button" data-bs-toggle="dropdown"
-											aria-expanded="false">
+										<button class="btn dropdown-toggle " type="button"
+											data-bs-toggle="dropdown" aria-expanded="false">
 											Opciones</button>
 										<ul class="dropdown-menu">
 											<li><a class="dropdown-item"
-													th:href="@{'/admin/editarProducto/'+${pro.id}}">Editar</a></li>
+												th:href="@{'/admin/editarProducto/'+${pro.id}}">Editar</a></li>
 											<li><a class="dropdown-item"
-													th:href="@{'/admin/eliminarProducto/'+${pro.id}}">Eliminar</a></li>
+												th:href="@{'/admin/eliminarProducto/'+${pro.id}}">Eliminar</a></li>
 										</ul>
 									</div>
 								</td>
@@ -91,11 +88,13 @@
 					</table>
 				</div>
 				<!-- Modal - ADD PRODUCT-->
-				<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-					aria-hidden="true">
-					<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+				<div class="modal fade" id="exampleModal" tabindex="-1"
+					aria-labelledby="exampleModalLabel" aria-hidden="true">
+					<div
+						class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
 						<div class="modal-content">
-							<form action="/admin/saveProducto" method="post" enctype="multipart/form-data">
+							<form action="/admin/saveProducto" method="post"
+								enctype="multipart/form-data">
 								<div class="modal-header">
 									<h1 class="modal-title fs-5" id="exampleModalLabel">Agregar
 										Producto</h1>
@@ -103,38 +102,37 @@
 										aria-label="Close"></button>
 								</div>
 								<div class="modal-body">
-									<div class="row">
+									<!-- Nombre -->
+									<div class="mb-3">
+										<label for="productName" class="form-label">Nombre del
+											Producto</label> <input type="text" class="form-control"
+											id="productName" name="nombre"
+											placeholder="Nombre del Producto" required>
+									</div>
+									<!-- Categoría -->
+									<div class="mb-3">
+										<label for="productStatus" class="form-label">Categoria</label>
+										<select class="form-select" id="productStatus"
+											name="categoria">
 
-										<!-- Nombre -->
-										<div class="mb-3 col">
-											<label for="productName" class="form-label">Nombre
-												del Producto</label> <input type="text" class="form-control"
-												id="productName" name="nombre" placeholder="Nombre del Producto"
-												required>
-										</div>
-										<!-- Categoría -->
-										<div class="mb-3 col">
-											<label for="productStatus" class="form-label">Categoria</label>
-											<select class="form-select" id="productStatus" name="categoria">
+											<option th:each="cat:${categoria}">[[${cat.nombre}]]</option>
 
-												<option th:each="cat:${categoria}">[[${cat.nombre}]]</option>
-
-											</select>
-										</div>
+										</select>
 									</div>
 									<!-- Descripción -->
 									<div class="mb-3">
 										<label for="productDescription" class="form-label">Descripción</label>
-										<textarea class="form-control" id="productDescription" name="descripcion"
-											placeholder="Descripción del Producto" required></textarea>
+										<textarea class="form-control" id="productDescription"
+											name="descripcion" placeholder="Descripción del Producto"
+											required></textarea>
 									</div>
 									<div class="row">
 
 										<!-- Precio -->
 										<div class="mb-3 col">
 											<label for="productPrice" class="form-label">Precio</label> <input
-												type="number" class="form-control" id="productPrice" name="precio"
-												placeholder="Precio del Producto" required>
+												type="number" class="form-control" id="productPrice"
+												name="precio" placeholder="Precio del Producto" required>
 										</div>
 										<!-- Descuento -->
 										<!-- 									<div class="mb-3 col"> -->
@@ -157,26 +155,23 @@
 										<!-- Stock -->
 										<div class="mb-3 col">
 											<label for="productStock" class="form-label">Stock</label> <input
-												type="number" class="form-control" id="productStock" name="stock"
-												placeholder="Stock del Producto" required>
+												type="number" class="form-control" id="productStock"
+												name="stock" placeholder="Stock del Producto" required>
 										</div>
 									</div>
-									<div class="row">
-
-										<!-- Estado -->
-										<div class="mb-3 col">
-											<label for="productStatus" class="form-label">Estado</label>
-											<select class="form-select" id="productStatus" name="estado">
-												<option value="true">Activo</option>
-												<option value="false">Inactivo</option>
-											</select>
-										</div>
-										<!-- Imagen -->
-										<div class="mb-3 col">
-											<label for="productImage" class="form-label">Imagen
-												del Producto</label> <input type="file" class="form-control"
-												id="productImage" name="file">
-										</div>
+									<!-- Estado -->
+									<div class="mb-3">
+										<label for="productStatus" class="form-label">Estado</label> <select
+											class="form-select" id="productStatus" name="estado">
+											<option value="true">Activo</option>
+											<option value="false">Inactivo</option>
+										</select>
+									</div>
+									<!-- Imagen -->
+									<div class="mb-3">
+										<label for="productImage" class="form-label">Imagen
+											del Producto</label> <input type="file" class="form-control"
+											id="productImage" name="file">
 									</div>
 								</div>
 								<div class="modal-footer">
@@ -196,5 +191,4 @@
 		</main>
 	</section>
 </body>
-
 </html>

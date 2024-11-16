@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="~http://www.thymeleaf.org"
+	th:replace="~{admin/base_admin::Layout(~{::section})}">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<section>
+
+		<div class="container mt-5">
+			<h1>Editar Categoría</h1>
+			<th:block th:if="${session.succMsg}">
+				<p class="text-success fw-bold">[[${session.succMsg}]]</p>
+				<th:block th:text="${@commomServiceImpl.removeSessionMessage()}"></th:block>
+			</th:block>
+			<th:block th:if="${session.errorMsg}">
+				<p class="text-danger fw-bold">[[${session.errorMsg}]]</p>
+				<th:block th:text="${@commomServiceImpl.removeSessionMessage()}"></th:block>
+
+			</th:block>
+			<form action="/admin/updateCategoria" method="post"
+				enctype="multipart/form-data">
+				<!-- ID (hidden) -->
+				<input type="hidden" id="categoryId" name="id" th:value="${categoria.id}">
+				<!-- Nombre -->
+				<div class="mb-3">
+					<label for="editCategoryName" class="form-label">Nombre de
+						la Categoría</label> <input type="text" class="form-control"
+						id="editCategoryName" name="nombre" th:value="${categoria.nombre}"
+						placeholder="Nombre de la Categoría" required>
+				</div>
+				<!-- Estado -->
+				<div class="mb-3">
+					<label for="editCategoryStatus" class="form-label">Estado</label> <select
+						class="form-select" id="editCategoryStatus" name="estado">
+						<option value="true" th:selected="${categoria.estado==true}">Activo</option>
+						<option value="false" th:selected="${categoria.estado==false}">Inactivo</option>
+					</select>
+				</div>
+				<!-- Imagen -->
+				<div class="text-center mb-4">
+					<img th:src="@{'/img/categoria_img/'+${categoria.imagenNombre}}"
+						class="img-fluid rounded" alt="Imagen de la Categoría" width="500"
+						height="500" />
+				</div>
+
+				<div class="mb-3">
+					<label for="editCategoryImage" class="form-label">edtar la imagen</label> <input type="file" class="form-control"
+						id="editCategoryImage" name="file">
+				</div>
+				<div class="mb-3">
+					<button type="submit" class="btn btn-primary">Actualizar
+						Categoría</button>
+					<a href="/admin/categorias" class="btn btn-secondary">Volver</a>
+				</div>
+			</form>
+		</div>
+	</section>
+</body>
+</html>
