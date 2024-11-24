@@ -14,6 +14,7 @@ public class UserController {
 	private CategoriaService categoriaService;
 	@Autowired
 	private ProductoService productoService;
+
 	@GetMapping
 	public String home(Model model) {
 		model.addAttribute("categorias", categoriaService.getAllActiveCategoria());
