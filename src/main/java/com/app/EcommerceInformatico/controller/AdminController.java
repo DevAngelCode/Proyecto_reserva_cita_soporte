@@ -31,10 +31,13 @@ import com.app.EcommerceInformatico.excel.CategoriasExcel;
 import com.app.EcommerceInformatico.excel.ProductosExcel;
 import com.app.EcommerceInformatico.model.Categoria;
 import com.app.EcommerceInformatico.model.Producto;
+import com.app.EcommerceInformatico.model.Servicio;
 import com.app.EcommerceInformatico.pdf.CategoriasPdf;
 import com.app.EcommerceInformatico.pdf.ProductosPdf;
 import com.app.EcommerceInformatico.service.CategoriaService;
+import com.app.EcommerceInformatico.service.CitaService;
 import com.app.EcommerceInformatico.service.ProductoService;
+import com.app.EcommerceInformatico.service.ServicioService;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -45,7 +48,10 @@ public class AdminController {
 	private CategoriaService categoriaService;
 	@Autowired
 	private ProductoService productoService;
-	
+	@Autowired
+	private ServicioService servicioService;
+	@Autowired
+	private CitaService citaService;
 
 	@GetMapping
 	public String home() {
@@ -57,6 +63,59 @@ public class AdminController {
 		model.addAttribute("productos", productoService.getAllProducto());
 		model.addAttribute("categoria", categoriaService.getAllCategoria());
 		return "admin/productos";
+	}
+
+	// Crud servicios
+	@GetMapping("/servicios")
+	public String servicios(Model model) {
+		model.addAttribute("servicio", servicioService.obtenerServicios());
+		return "admin/servicios";
+	}
+
+	@PostMapping("/saveServicio")
+	public String saveServicio(@ModelAttribute Servicio servicio, HttpSession session) {
+		if (servicioService.existeServicio(servicio.getNombre())) {
+			session.setAttribute("errorMsg", "El servicio ya existe");
+
+		} else {
+
+			servicioService.guardarServicio(servicio);
+			session.setAttribute("succMsg", "Servicio guardado correctamente");
+		}
+		return "redirect:/admin/servicios";
+	}
+
+	@GetMapping("/eliminarServicio/{id}")
+	public String deleteServicio(@PathVariable Long id, HttpSession session) {
+		try {
+			servicioService.eliminarServicio(id);
+			session.setAttribute("succMsg", "Servicio eliminado correctamente");
+		} catch (Exception e) {
+			session.setAttribute("errorMsg", "No se puede eliminar el servicio porque depende de una cita.");
+		}
+		return "redirect:/admin/servicios";
+	}
+
+	@GetMapping("/editarServicio/{id}")
+	public String editServicio(@PathVariable Long id, Model model) {
+		Servicio servicio = servicioService.obtenerServicio(id);
+		model.addAttribute("servicio", servicio);
+		return "admin/editar_servicio";
+	}
+
+	@PostMapping("/updateServicio")
+	public String updateServicio(@ModelAttribute Servicio servicio, HttpSession session) {
+		servicioService.guardarServicio(servicio);
+		session.setAttribute("succMsg", "Servicio actualizado correctamente");
+		return "redirect:/admin/editarServicio/" + servicio.getId();
+	}
+
+	// citas
+	@GetMapping("/citas")
+	public String citas(Model model) {
+		model.addAttribute("citas", citaService.obtenerCitas());
+
+		return "admin/citas";
 	}
 
 	@GetMapping("/categorias")
@@ -147,39 +206,39 @@ public class AdminController {
 		}
 		return "redirect:/admin/categorias";
 	}
+
 	@GetMapping("/ExportarCategoriasPdf")
 	public ResponseEntity<InputStreamResource> exportarCategoriasPdf() {
-	    List<Categoria> categorias = categoriaService.getAllCategoria();
-	    ByteArrayInputStream bis = CategoriasPdf.categoriesReport(categorias);
+		List<Categoria> categorias = categoriaService.getAllCategoria();
+		ByteArrayInputStream bis = CategoriasPdf.categoriesReport(categorias);
 
-	    if (bis == null) {
-	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-	    }
+		if (bis == null) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+		}
 
-	    HttpHeaders headers = new HttpHeaders();
-	    headers.add("Content-Disposition", "inline; filename=categorias.pdf");
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-Disposition", "inline; filename=categorias.pdf");
 
-	    return ResponseEntity.ok().headers(headers).contentType(MediaType.APPLICATION_PDF)
-	            .body(new InputStreamResource(bis));
+		return ResponseEntity.ok().headers(headers).contentType(MediaType.APPLICATION_PDF)
+				.body(new InputStreamResource(bis));
 	}
-	
+
 	@GetMapping("/ExportarCategoriasExcel")
 	public ResponseEntity<InputStreamResource> exportarCategoriasExcel() {
-	    List<Categoria> categorias = categoriaService.getAllCategoria();
-	    ByteArrayInputStream bis = CategoriasExcel.categoriesReport(categorias);
+		List<Categoria> categorias = categoriaService.getAllCategoria();
+		ByteArrayInputStream bis = CategoriasExcel.categoriesReport(categorias);
 
-	    if (bis == null) {
-	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-	    }
+		if (bis == null) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+		}
 
-	    HttpHeaders headers = new HttpHeaders();
-	    headers.add("Content-Disposition", "attachment; filename=categorias.xlsx");
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-Disposition", "attachment; filename=categorias.xlsx");
 
-	    return ResponseEntity.ok().headers(headers).contentType(MediaType.APPLICATION_OCTET_STREAM)
-	            .body(new InputStreamResource(bis));
+		return ResponseEntity.ok().headers(headers).contentType(MediaType.APPLICATION_OCTET_STREAM)
+				.body(new InputStreamResource(bis));
 	}
-	
-	
+
 	@PostMapping("/saveProducto")
 	public String saveProducto(@ModelAttribute Producto producto, @RequestParam MultipartFile file, HttpSession session)
 			throws IOException {
@@ -187,10 +246,10 @@ public class AdminController {
 		producto.setImagen(imageName);
 		producto.setDescuento(0);
 		producto.setPrecioDescuento(producto.getPrecio());
-		
+
 		Boolean existProduct = productoService.existProducto(producto.getNombre());
 		if (existProduct) {
-			
+
 			session.setAttribute("errorMsg", "El producto ya existe");
 		} else {
 			Producto saveProduct = productoService.saveProducto(producto);
@@ -233,7 +292,7 @@ public class AdminController {
 	@PostMapping("/updateProducto")
 	public String updateProducto(@ModelAttribute Producto producto, @RequestParam MultipartFile file,
 			HttpSession session) throws IOException {
-		
+
 		Producto oldProducto = productoService.getProductoById(producto.getId());
 		Boolean existProduct = productoService.existProducto(producto.getNombre());
 		if (existProduct && !oldProducto.getNombre().equals(producto.getNombre())) {
@@ -255,6 +314,7 @@ public class AdminController {
 
 		return "redirect:/admin/editarProducto/" + producto.getId();
 	}
+
 	@GetMapping("/ExportarProductosPdf")
 	public ResponseEntity<InputStreamResource> exportarProductosPdf() {
 		List<Producto> productos = productoService.getAllProducto();
@@ -269,26 +329,26 @@ public class AdminController {
 
 		return ResponseEntity.ok().headers(headers).contentType(MediaType.APPLICATION_PDF)
 				.body(new InputStreamResource(bis));
-	    
+
 	}
-	
+
 	@GetMapping("/ExportarProductosExcel")
-	 public ResponseEntity<InputStreamResource> exportarProductosExcel() {
-        List<Producto> productos = productoService.getAllProducto();
-        ByteArrayInputStream bis = ProductosExcel.productosToExcel(productos);
+	public ResponseEntity<InputStreamResource> exportarProductosExcel() {
+		List<Producto> productos = productoService.getAllProducto();
+		ByteArrayInputStream bis = ProductosExcel.productosToExcel(productos);
 
-        if (bis == null) {
-            return ResponseEntity.internalServerError().build();
-        }
+		if (bis == null) {
+			return ResponseEntity.internalServerError().build();
+		}
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Disposition", "attachment; filename=productos.xlsx");
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-Disposition", "attachment; filename=productos.xlsx");
 
-        return ResponseEntity.ok()
-                .headers(headers)
-                .contentType(MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
-                .body(new InputStreamResource(bis));
-    }
-	
+		return ResponseEntity.ok()
+				.headers(headers)
+				.contentType(
+						MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
+				.body(new InputStreamResource(bis));
+	}
 
 }

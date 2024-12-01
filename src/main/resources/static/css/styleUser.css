@@ -177,3 +177,163 @@ body {
 #registrar {
     left: 450px;
 }
+
+/*ESTILO DE FORM CITA*/
+:root {
+    --primary-color: rgb(11, 78, 179);
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+@keyframes animate {
+    from {
+        transform: scale(1, 0);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1, 1);
+        opacity: 1;
+    }
+}
+
+.cuadro1 {
+    height: 100vh;
+    margin: 20px 0;
+}
+
+.cuadro3 {
+    background-color: #D4DFEB;
+    border-radius: 20px;
+    max-width: 793px;
+    max-height: 490px;
+    padding: 1.5rem;
+}
+
+/*botones opciones de cuadro izquierdo*/
+.bttn {
+    width: 100%;
+    height: 45px;
+    border-radius: 15px;
+    margin-bottom: 5px;
+    background-color: #D4DFEB;
+    color: #5F5B5B;
+    font-weight: 700;
+}
+
+.input1 {
+    display: block;
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 1.2rem;
+}
+
+.width-50 {
+    width: 50%;
+}
+
+.ml-auto {
+    margin-left: auto;
+}
+
+/* Form */
+.form {
+    width: clamp(520px, 30%, 430px);
+    margin: 0 auto;
+    padding: 1.5rem;
+}
+
+.form-step {
+    display: none;
+    transform-origin: top;
+    animation: animate 0.5s;
+}
+
+.form-step-active {
+    display: block;
+}
+
+.input-group {
+    margin: 0.5rem 0;
+}
+
+/* Button */
+.btns-group {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+}
+
+.btns {
+    padding: 0.75rem;
+    display: block;
+    text-decoration: none;
+    background-color: var(--primary-color);
+    color: #f3f3f3;
+    text-align: center;
+    border-radius: 1.2rem;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn:hover {
+    box-shadow: 0 0 0 2px #fff, 0 0 0 3px var(--primary-color);
+}
+
+/*ESTILO DE SOBRE NOSOTROS*/
+.content {
+    padding: 20px;
+}
+
+.section {
+    background-color: white;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.section h2 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.section p {
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+.image-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.image-section img {
+    max-width: 100%;
+    border-radius: 10px;
+}
+
+.image-section .text {
+    padding: 20px;
+    text-align: center;
+}
+
+/* Responsive adjustments */
+@media (min-width: 768px) {
+    .image-section {
+        flex-direction: row;
+        align-items: flex-start;
+        text-align: left;
+    }
+
+    .image-section .text {
+        padding-left: 20px;
+    }
+}

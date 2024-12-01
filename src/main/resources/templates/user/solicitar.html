@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="~http://www.thymeleaf.org" th:replace="~{user/base_user::Layout(~{::section})}">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Solicitar Cita</title>
+    <link rel="stylesheet" th:href="@{/css/estilo.css}">
+</head>
+
+<body>
+    <section>
+        <!--Navegacion-->
+        <!--Cuerpo-->
+        <div class="container">
+            <div class="row cuadro1">
+                <!--Cuadro principal-->
+                <!-- Corazon izquierdo -->
+                <div class="col-3">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <button class="nav-link active bt-solicitar bttn"
+                                th:onclick="'location.href=\'' + @{/solicitar} + '\''">Solicitar
+                                Cita</button>
+                        </li>
+                        <li class="nav-item">
+                            <button class="nav-link active bt-calendario bttn"
+                                th:onclick="'location.href=\'' + @{/calendario} + '\''">Calendario</button>
+                        </li>
+                        <li class="nav-item">
+                            <button class="nav-link active bt-citas bttn"
+                                th:onclick="'location.href=\'' + @{/historial} + '\''">Historial de
+                                Citas</button>
+                        </li>
+                    </ul>
+                </div>
+
+                <!--Cuadro derecho-->
+                <div class="col-9 cuadro3">
+                    <form action="/procesarFormulario" method="post" class="form">
+                        <!--PASO 1-->
+                        <div class="form-step form-step-active">
+                            <div class="input-group">
+                                <select class="form-select input1" id="editCategoryStatus" name="servicio" required>
+                                    <option value="">Seleccione un servicio</option>
+                                    <th:block th:each="servicio : ${servicios}">
+                                        <option th:value="${servicio.id}" th:text="${servicio.nombre}"></option>
+                                    </th:block>
+                                </select>
+                            </div>
+                            <div class="input-group">
+                                <input class="input1" type="text" name="ubicacion" placeholder="Escoger un Taller"
+                                    required />
+                            </div>
+                            <div class="input-group">
+                                <textarea class="inputDesc input1" rows="3" name="description" id="textDesc" required
+                                    style="resize: none;" placeholder="Escribe una descripción"></textarea>
+                            </div>
+                            <div class="input-group">
+                                <input class="input1" type="date" name="fecha" placeholder="Escoger una fecha"
+                                    required />
+                            </div>
+                            <div class="input-group">
+                                <input class="input1" type="time" name="hora" placeholder="Escoger una Hora" required />
+                            </div>
+                            <div class="">
+                                <a class="btns btn-next width-50 ml-auto">siguiente</a>
+                            </div>
+                        </div>
+                        <!--PASO 2-->
+                        <div class="form-step">
+                            <div class="input-group">
+                                <input class="input1" type="text" name="nombre" placeholder="Nombres" required />
+                            </div>
+                            <div class="input-group">
+                                <input class="input1" type="text" name="apellido" placeholder="Apellidos" required />
+                            </div>
+                            <div class="input-group">
+                                <input class="input1" type="email" name="email" placeholder="Correo Electrónico"
+                                    required />
+                            </div>
+                            <div class="input-group">
+                                <input class="input1" type="number" name="numero" placeholder="Número de Teléfono"
+                                    required />
+                            </div>
+                            <div class="btns-group">
+                                <a class="btns btn-prev">anterior</a>
+                                <input type="submit" value="Enviar" class="btns input1" />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+
+</body>
+
+</html>

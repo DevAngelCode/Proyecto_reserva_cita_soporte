@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="~http://www.thymeleaf.org" th:replace="~{admin/base_admin::Layout(~{::section})}">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Insert title here</title>
+</head>
+
+<body>
+    <section>
+
+        <div class="container mt-5">
+            <h1>Editar Servicio</h1>
+            <th:block th:if="${session.succMsg}">
+                <p class="text-success fw-bold">[[${session.succMsg}]]</p>
+                <th:block th:text="${@commomServiceImpl.removeSessionMessage()}"></th:block>
+            </th:block>
+            <th:block th:if="${session.errorMsg}">
+                <p class="text-danger fw-bold">[[${session.errorMsg}]]</p>
+                <th:block th:text="${@commomServiceImpl.removeSessionMessage()}"></th:block>
+
+            </th:block>
+            <form action="/admin/updateServicio" method="post" enctype="multipart/form-data">
+                <!-- ID (hidden) -->
+                <input type="hidden" id="servicioId" name="id" th:value="${servicio.id}">
+                <!-- Nombre -->
+                <div class="mb-3">
+                    <label for="categoryName" class="form-label">Nombre del
+                        Servicio</label> <input type="text" class="form-control" id="categoryName" name="nombre"
+                        th:value="${servicio.nombre}" placeholder="Nombre del Servicio" required>
+                </div>
+                <!-- Precio -->
+                <div class="mb-3">
+                    <label for="categoryPrice" class="form-label">Precio</label> <input type="number"
+                        class="form-control" id="categoryPrice" name="precio" th:value="${servicio.precio}"
+                        placeholder="Precio" required>
+                </div>
+
+                <div class="mb-3">
+                    <button type="submit" class="btn btn-primary">Actualizar
+                        Servicio</button>
+                    <a href="/admin/servicios" class="btn btn-secondary">Volver</a>
+                </div>
+            </form>
+        </div>
+    </section>
+</body>
+
+</html>
