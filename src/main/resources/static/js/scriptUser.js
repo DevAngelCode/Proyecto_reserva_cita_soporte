@@ -13,10 +13,10 @@ function setCardsToShow() {
         cardsToShow = 3; // Pantallas pequeñas
     } else if (windowWidth >= 576) {
         cardsToShow = 2; // Pantallas muy pequeñas
-    }else {
-		        cardsToShow = 1; // Pantallas muy pequeñas
-	}
-		}
+    } else {
+        cardsToShow = 1; // Pantallas muy pequeñas
+    }
+}
 
 
 function updateSliderPosition() {
@@ -39,7 +39,7 @@ function prevCard() {
     }
 }
 
-// Inicializa el número de tarjetas a mostrar y añade listeners
+//#region Inicializa el número de tarjetas a mostrar y añade listeners
 window.addEventListener('load', () => {
     setCardsToShow();
     updateSliderPosition();
@@ -48,3 +48,20 @@ window.addEventListener('resize', () => {
     setCardsToShow();
     updateSliderPosition();
 });
+
+//#region SCRIPT PARA EL FORM DE LOGIN Y REGISTER 
+var x = document.getElementById("login");
+var y = document.getElementById("registrar");
+var z = document.getElementById("elegir");
+
+function login() {
+    x.style.left = "50px";
+    y.style.left = "450px";
+    z.style.left = "0px";
+}
+
+function registrar() {
+    x.style.left = "-400px";
+    y.style.left = "50px";
+    z.style.left = "120px";
+}

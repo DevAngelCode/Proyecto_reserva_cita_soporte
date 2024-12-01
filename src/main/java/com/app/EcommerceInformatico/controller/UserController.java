@@ -21,4 +21,9 @@ public class UserController {
 		model.addAttribute("productos", productoService.getAllActiveProducto());
 		return "user/home";
 	}
+
+	@GetMapping("/login")
+	public String mostrarFormularioAuth(Model model) {
+		return "user/login";
+	}
 }
