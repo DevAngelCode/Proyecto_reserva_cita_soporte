@@ -7,6 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.security.Principal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,10 +32,12 @@ import com.app.EcommerceInformatico.excel.CategoriasExcel;
 import com.app.EcommerceInformatico.excel.ProductosExcel;
 import com.app.EcommerceInformatico.model.Categoria;
 import com.app.EcommerceInformatico.model.Producto;
+import com.app.EcommerceInformatico.model.User;
 import com.app.EcommerceInformatico.pdf.CategoriasPdf;
 import com.app.EcommerceInformatico.pdf.ProductosPdf;
 import com.app.EcommerceInformatico.service.CategoriaService;
 import com.app.EcommerceInformatico.service.ProductoService;
+import com.app.EcommerceInformatico.service.UserService;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -45,9 +48,25 @@ public class AdminController {
 	private CategoriaService categoriaService;
 	@Autowired
 	private ProductoService productoService;
+	@Autowired
+	private UserService userService;
+	
+	@ModelAttribute
+	public void getUserDetails(Principal p, Model model) {
+		if (p != null) {
+			String email = p.getName();
+			User userDtls = userService.getUserByEmail(email);
+			model.addAttribute("user", userDtls);
+			//Integer countCart = cartService.getCounrCart(userDtls.getId());
+			//model.addAttribute("countCart", countCart);
+
+		}
+		//List<Category> allActiveCategory = categoryService.getAllActiveCategory();
+		//model.addAttribute("categorys", allActiveCategory);
+	}
 	
 
-	@GetMapping
+	@GetMapping("/")
 	public String home() {
 		return "admin/home";
 	}
