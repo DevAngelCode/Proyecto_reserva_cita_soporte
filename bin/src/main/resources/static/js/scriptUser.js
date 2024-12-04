@@ -19,26 +19,10 @@ function setCardsToShow() {
 }
 
 
-/*function updateSliderPosition() {
+function updateSliderPosition() {
     const slider = document.getElementById('slider');
     const cardWidth = slider.querySelector('.card').clientWidth;
     slider.style.transform = `translateX(-${currentIndex * cardWidth}px)`;
-}*/
-function updateSliderPosition() {
-    const slider = document.getElementById('slider');
-    
-    if (slider) {
-        const card = slider.querySelector('.card');
-        
-        if (card) {
-            const cardWidth = card.clientWidth;
-            slider.style.transform = `translateX(-${currentIndex * cardWidth}px)`;
-        } else {
-            console.error("No se encontraron tarjetas dentro del slider.");
-        }
-    } else {
-        console.error("No se encontró el slider.");
-    }
 }
 
 function nextCard() {
