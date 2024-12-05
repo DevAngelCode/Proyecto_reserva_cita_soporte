@@ -58,7 +58,7 @@ body {
     padding: 0 7px 0 8px;
 }
 
-.card {
+.carddd {
     flex: 0 0 20%;
     /* 5 tarjetas visibles por fila (20% cada una) */
     max-width: 20%;
@@ -66,7 +66,7 @@ body {
     background: none;
 }
 
-.card img {
+.carddd img {
     border-radius: 50%;
     border: 2px solid #d1d1d1;
     width: 200px;

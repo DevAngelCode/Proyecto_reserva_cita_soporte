@@ -46,6 +46,7 @@
 								id="contrasena" type="password" class="input-formulario"
 								name="password" placeholder="Contraseña" required>
 							<button type="submit" class="btn-submit mt-5" name="btt_ingresar">Acceder</button>
+							<a href="/recuperar" class="text-center d-block mt-3">Olvidé mi contraseña</a>
 							<div th:if="${param.error}"
 								class="alert alert-danger text-center">
 								[[${session.SPRING_SECURITY_LAST_EXCEPTION.message}]]</div>
