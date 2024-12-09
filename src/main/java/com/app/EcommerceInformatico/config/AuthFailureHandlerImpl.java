@@ -40,7 +40,8 @@ public class AuthFailureHandlerImpl extends SimpleUrlAuthenticationFailureHandle
 			// Si el usuario existe, pero la contraseña es incorrecta
 			if (exception instanceof BadCredentialsException) {
 				exception = new BadCredentialsException("Contraseña incorrecta.");
-			} else if (userDtls.getIsEnable()) {
+			}
+			if (userDtls.getIsEnable()) {
 				if (userDtls.getCuentaNoBloqueada()) {
 					if (userDtls.getIntentosFallidos() < AppConstant.ATTEMPT_TIME) {
 						userService.increaseFailedAttempts(userDtls);
