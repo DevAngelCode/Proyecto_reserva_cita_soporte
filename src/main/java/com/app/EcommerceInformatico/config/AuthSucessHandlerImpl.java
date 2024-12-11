@@ -1,4 +1,5 @@
 package com.app.EcommerceInformatico.config;
+
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Set;
@@ -19,14 +20,18 @@ public class AuthSucessHandlerImpl implements AuthenticationSuccessHandler {
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
 			Authentication authentication) throws IOException, ServletException {
-		Collection<? extends GrantedAuthority> authorities =authentication.getAuthorities();
-		Set<String> roles =AuthorityUtils.authorityListToSet(authorities);
-		if(roles.contains("ROLE_ADMIN")) {
-            response.sendRedirect("/admin/");
-            }else {
-            	response.sendRedirect("/");
-            }
-            
+		Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+		Set<String> roles = AuthorityUtils.authorityListToSet(authorities);
+		if (roles.contains("ROLE_ADMIN")) {
+			response.sendRedirect("/admin/");
+		}
+		if (roles.contains("ROLE_USER")) {
+			response.sendRedirect("/");
+		}
+		if (roles.contains("ROLE_EMPLOYEE")) {
+			response.sendRedirect("/empleado/");
+		}
+
 	}
 
 }

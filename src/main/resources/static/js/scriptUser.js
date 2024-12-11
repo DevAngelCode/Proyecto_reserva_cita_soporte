@@ -1,6 +1,6 @@
 let currentIndex = 0;
 let cardsToShow = 5; // Número inicial de tarjetas visibles
-const totalCards = document.querySelectorAll('#slider .card').length;
+const totalCards = document.querySelectorAll('#slider .carddd').length;
 
 function setCardsToShow() {
     const windowWidth = window.innerWidth;
@@ -28,7 +28,7 @@ function updateSliderPosition() {
     const slider = document.getElementById('slider');
     
     if (slider) {
-        const card = slider.querySelector('.card');
+        const card = slider.querySelector('.carddd');
         
         if (card) {
             const cardWidth = card.clientWidth;
@@ -79,7 +79,7 @@ function login() {
 function registrar() {
     x.style.left = "-400px";
     y.style.left = "50px";
-    z.style.left = "120px";
+    z.style.left = "135px";
 }
 
 

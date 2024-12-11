@@ -77,7 +77,7 @@ public class ProductosPdf {
 				table.addCell(cell);
 
 				// Categoria column
-				cell = new PdfPCell(new Phrase(producto.getCategoria()));
+				cell = new PdfPCell(new Phrase(producto.getCategoria().getNombre()));
 				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 				table.addCell(cell);

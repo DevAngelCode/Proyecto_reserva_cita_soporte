@@ -18,4 +18,5 @@ public interface UserService {
 	public void updateUserResetToken(String email, String resetToken);
 	public User getUserByToken(String Token);
 	public User updateUser(User user);
+	public List<User> getAllEmpleado();
 }

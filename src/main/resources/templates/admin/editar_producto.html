@@ -34,13 +34,13 @@
 				<!-- Categoría -->
 				<div class="mb-3">
 					<label for="productStatus" class="form-label">Categoria</label> <select
-						class="form-select" id="productStatus" name="categoria">
+						class="form-select" id="productStatus" name="categoriaId">
 						<!-- Opción predeterminada solo si no hay categoría seleccionada -->
-						<option th:if="${producto.categoria == null}" value="">Seleccionar...</option>
+						<option th:if="${producto.categoria.nombre == null}" value="">Seleccionar...</option>
 						<!-- Lista de opciones de categoría -->
 						<option th:each="cat : ${categoria}" 
 							th:text="${cat.nombre}"
-							th:selected="${producto.categoria == cat.nombre}"></option>
+							th:selected="${producto.categoria.nombre == cat.nombre}" th:value="${cat.id}"></option>
 					</select>
 				</div>
 

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.app.EcommerceInformatico.model.Categoria;
 import com.app.EcommerceInformatico.model.Producto;
 import com.app.EcommerceInformatico.repository.ProductoRepository;
 import com.app.EcommerceInformatico.service.ProductoService;
@@ -54,14 +55,14 @@ public class ProductoServiceImpl implements ProductoService {
 	}
 
 	@Override
-	public Producto updateProducto(Producto producto, MultipartFile imagen) {
+	public Producto updateProducto(Producto producto, MultipartFile imagen, Categoria categoria) {
 
 		Producto dbProducto = getProductoById(producto.getId());
 
 		String imagenNombre = imagen.isEmpty() ? dbProducto.getImagen() : imagen.getOriginalFilename();
 		dbProducto.setNombre(producto.getNombre());
 		dbProducto.setDescripcion(producto.getDescripcion());
-		dbProducto.setCategoria(producto.getCategoria());
+		dbProducto.setCategoria(categoria);
 		dbProducto.setPrecio(producto.getPrecio());
 		dbProducto.setStock(producto.getStock());
 		dbProducto.setEstado(producto.isEstado());

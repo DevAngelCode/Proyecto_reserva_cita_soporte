@@ -34,14 +34,13 @@ public class CategoriaServiceImpl implements CategoriaService {
 	}
 
 	@Override
-	public Boolean deleteCategoria(Long id) {
+	public void deleteCategoria(Long id) {
 		Categoria categoria = categoriaRepository.findById(id).orElse(null);
 		if (!ObjectUtils.isEmpty(categoria)) {
 			categoriaRepository.deleteById(id);
-			return true;
+
 		}
-		
-		return false;
+
 	}
 
 	@Override

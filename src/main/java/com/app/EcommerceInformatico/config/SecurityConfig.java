@@ -47,7 +47,9 @@ public class SecurityConfig {
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http.csrf(csrf -> csrf.disable()).cors(cors -> cors.disable())
 				.authorizeHttpRequests(req -> req.requestMatchers("/user/**").hasRole("USER")
-						.requestMatchers("/admin/**").hasRole("ADMIN").requestMatchers("/**").permitAll())
+						.requestMatchers("/admin/**").hasRole("ADMIN")
+						.requestMatchers("/empleado/**").hasRole("EMPLOYEE")
+						.requestMatchers("/**").permitAll())
 				.formLogin(form -> form.loginPage("/signin").loginProcessingUrl("/login")
 						// .defaultSuccessUrl("/")
 						.failureHandler(authenticationFailureHandler).successHandler(authenticationSuccessHandler))

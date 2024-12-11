@@ -9,13 +9,13 @@
 
 <body>
 	<section>
-		<div class="container-fluid">
+		<div class="container-fluid cuadroPrincipal">
 			<div class="row">
 				<!-- Columna izquierda -->
 				<div
-					class="col-12 col-md-5 col1 d-flex justify-content-center align-items-center">
+					class="col col1 d-flex  justify-content-center align-items-center">
 					<div class="position-relative bg-white p-2 rounded-3 shadow"
-						style="height: 465px; width: 370px; overflow: hidden;">
+						style="height: 600px; width: 400px; overflow: hidden;">
 						<div class="mx-auto my-3 text-center" style="width: 240px;">
 							<p class="fw-bold fs-2">BIENVENIDO</p>
 							<th:block th:if="${session.succMsg}">
@@ -29,7 +29,7 @@
 							</th:block>
 						</div>
 						<div class="position-relative mx-auto"
-							style="width: 250px; border-radius: 30px; box-shadow: 0 0 15px 5px #e0e0e0;">
+							style="width: 264px; border-radius: 30px; box-shadow: 0 0 15px 5px #e0e0e0;">
 							<div id="elegir"></div>
 							<button class="btn-LR" onclick="login()">Iniciar Sesión</button>
 							<button class="btn-LR" onclick="registrar()">Registrar</button>
@@ -75,13 +75,13 @@
 					</div>
 				</div>
 				<!-- Columna derecha -->
-				<div
+				<!--<div
 					class="col-12 col-md-7 col2 d-flex justify-content-center align-items-center">
 					<div>
 						<img src="/img/img-login.png" alt="Página de login ProTec Store"
 							class="img-fluid">
 					</div>
-				</div>
+				</div>-->
 			</div>
 		</div>
 	</section>

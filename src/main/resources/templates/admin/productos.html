@@ -60,7 +60,7 @@
 									class="img-fluid" width="70px" /></td>
 
 								<td>[[${pro.nombre}]]</td>
-								<td>[[${pro.categoria}]]</td>
+								<td>[[${pro.categoria.nombre}]]</td>
 								<td>[[${pro.descripcion}]]</td>
 								<td>[[${pro.precio}]]</td>
 								<td>[[${pro.descuento}]]</td>
@@ -113,9 +113,9 @@
 									<div class="mb-3">
 										<label for="productStatus" class="form-label">Categoria</label>
 										<select class="form-select" id="productStatus"
-											name="categoria">
+											name="categoriaId">
 
-											<option th:each="cat:${categoria}">[[${cat.nombre}]]</option>
+											<option th:each="cat:${categoria}" th:value="${cat.id}">[[${cat.nombre}]]</option>
 
 										</select>
 									</div>

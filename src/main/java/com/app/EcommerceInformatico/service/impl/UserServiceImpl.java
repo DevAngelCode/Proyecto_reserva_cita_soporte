@@ -119,4 +119,10 @@ public class UserServiceImpl implements UserService {
 
 	}
 
+	@Override
+	public List<User> getAllEmpleado() {
+		// TODO Auto-generated method stub
+		return userRepository.findByRol("ROLE_EMPLOYEE");
+	}
+
 }

@@ -39,7 +39,7 @@ public class ProductosExcel {
                 row.createCell(0).setCellValue(producto.getId());
                 row.createCell(1).setCellValue(producto.getNombre());
                 row.createCell(2).setCellValue(producto.getDescripcion());
-                row.createCell(3).setCellValue(producto.getCategoria());
+                row.createCell(3).setCellValue(producto.getCategoria().getNombre());
                 row.createCell(4).setCellValue(producto.getPrecio());
                 row.createCell(5).setCellValue(producto.getStock());
                 row.createCell(6).setCellValue(producto.getImagen());

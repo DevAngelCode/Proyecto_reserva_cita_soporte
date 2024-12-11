@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,7 +26,8 @@ public class Producto {
 	private String nombre;
 	@Column(length = 5000)
 	private String descripcion;
-	private String categoria;
+	@ManyToOne
+	private Categoria categoria;
 	private double precio;
 	private int stock;
 	private String imagen;

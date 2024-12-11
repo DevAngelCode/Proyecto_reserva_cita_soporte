@@ -50,33 +50,27 @@ public class AdminController {
 	private ProductoService productoService;
 	@Autowired
 	private UserService userService;
-	
+
 	@ModelAttribute
 	public void getUserDetails(Principal p, Model model) {
 		if (p != null) {
 			String email = p.getName();
 			User userDtls = userService.getUserByEmail(email);
 			model.addAttribute("user", userDtls);
-			//Integer countCart = cartService.getCounrCart(userDtls.getId());
-			//model.addAttribute("countCart", countCart);
+			// Integer countCart = cartService.getCounrCart(userDtls.getId());
+			// model.addAttribute("countCart", countCart);
 
 		}
-		//List<Category> allActiveCategory = categoryService.getAllActiveCategory();
-		//model.addAttribute("categorys", allActiveCategory);
+		// List<Category> allActiveCategory = categoryService.getAllActiveCategory();
+		// model.addAttribute("categorys", allActiveCategory);
 	}
-	
 
 	@GetMapping("/")
 	public String home() {
 		return "admin/home";
 	}
 
-	@GetMapping("/productos")
-	public String productos(Model model) {
-		model.addAttribute("productos", productoService.getAllProducto());
-		model.addAttribute("categoria", categoriaService.getAllCategoria());
-		return "admin/productos";
-	}
+	
 
 	@GetMapping("/categorias")
 	public String categorias(Model model) {
@@ -158,58 +152,67 @@ public class AdminController {
 
 	@GetMapping("/eliminarCategoria/{id}")
 	public String eliminarCategoria(@PathVariable Long id, HttpSession session) {
-		Boolean deleteCategory = categoriaService.deleteCategoria(id);
-		if (deleteCategory) {
+		try {
+			categoriaService.deleteCategoria(id);
 			session.setAttribute("succMsg", "Eliminado con éxito");
-		} else {
-			session.setAttribute("errorMsg", "No eliminado! error interno del servidor");
+		} catch (Exception e) {
+			session.setAttribute("errorMsg", "No se puede eliminar, esta categoría está asociada con productos");
 		}
 		return "redirect:/admin/categorias";
+
 	}
+
 	@GetMapping("/ExportarCategoriasPdf")
 	public ResponseEntity<InputStreamResource> exportarCategoriasPdf() {
-	    List<Categoria> categorias = categoriaService.getAllCategoria();
-	    ByteArrayInputStream bis = CategoriasPdf.categoriesReport(categorias);
+		List<Categoria> categorias = categoriaService.getAllCategoria();
+		ByteArrayInputStream bis = CategoriasPdf.categoriesReport(categorias);
 
-	    if (bis == null) {
-	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-	    }
+		if (bis == null) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+		}
 
-	    HttpHeaders headers = new HttpHeaders();
-	    headers.add("Content-Disposition", "inline; filename=categorias.pdf");
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-Disposition", "inline; filename=categorias.pdf");
 
-	    return ResponseEntity.ok().headers(headers).contentType(MediaType.APPLICATION_PDF)
-	            .body(new InputStreamResource(bis));
+		return ResponseEntity.ok().headers(headers).contentType(MediaType.APPLICATION_PDF)
+				.body(new InputStreamResource(bis));
 	}
-	
+
 	@GetMapping("/ExportarCategoriasExcel")
 	public ResponseEntity<InputStreamResource> exportarCategoriasExcel() {
-	    List<Categoria> categorias = categoriaService.getAllCategoria();
-	    ByteArrayInputStream bis = CategoriasExcel.categoriesReport(categorias);
+		List<Categoria> categorias = categoriaService.getAllCategoria();
+		ByteArrayInputStream bis = CategoriasExcel.categoriesReport(categorias);
 
-	    if (bis == null) {
-	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-	    }
+		if (bis == null) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+		}
 
-	    HttpHeaders headers = new HttpHeaders();
-	    headers.add("Content-Disposition", "attachment; filename=categorias.xlsx");
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-Disposition", "attachment; filename=categorias.xlsx");
 
-	    return ResponseEntity.ok().headers(headers).contentType(MediaType.APPLICATION_OCTET_STREAM)
-	            .body(new InputStreamResource(bis));
+		return ResponseEntity.ok().headers(headers).contentType(MediaType.APPLICATION_OCTET_STREAM)
+				.body(new InputStreamResource(bis));
 	}
-	
-	
+	@GetMapping("/productos")
+	public String productos(Model model) {
+		model.addAttribute("productos", productoService.getAllProducto());
+		model.addAttribute("categoria", categoriaService.getAllCategoria());
+		return "admin/productos";
+	}
+
 	@PostMapping("/saveProducto")
-	public String saveProducto(@ModelAttribute Producto producto, @RequestParam MultipartFile file, HttpSession session)
+	public String saveProducto(@RequestParam Long categoriaId,@ModelAttribute Producto producto, @RequestParam MultipartFile file, HttpSession session)
 			throws IOException {
 		String imageName = file != null && !file.isEmpty() ? file.getOriginalFilename() : "default.jpg";
 		producto.setImagen(imageName);
 		producto.setDescuento(0);
 		producto.setPrecioDescuento(producto.getPrecio());
-		
+		Categoria categoria = categoriaService.getCategoriaById(categoriaId);
+		producto.setCategoria(categoria);
+
 		Boolean existProduct = productoService.existProducto(producto.getNombre());
 		if (existProduct) {
-			
+
 			session.setAttribute("errorMsg", "El producto ya existe");
 		} else {
 			Producto saveProduct = productoService.saveProducto(producto);
@@ -250,11 +253,12 @@ public class AdminController {
 	}
 
 	@PostMapping("/updateProducto")
-	public String updateProducto(@ModelAttribute Producto producto, @RequestParam MultipartFile file,
+	public String updateProducto(@RequestParam Long categoriaId,@ModelAttribute Producto producto, @RequestParam MultipartFile file,
 			HttpSession session) throws IOException {
-		
+
 		Producto oldProducto = productoService.getProductoById(producto.getId());
 		Boolean existProduct = productoService.existProducto(producto.getNombre());
+		Categoria categoria = categoriaService.getCategoriaById(categoriaId);
 		if (existProduct && !oldProducto.getNombre().equals(producto.getNombre())) {
 			session.setAttribute("errorMsg", "El producto ya existe");
 		} else {
@@ -262,7 +266,7 @@ public class AdminController {
 			if (producto.getDescuento() < 0 || producto.getDescuento() > 100) {
 				session.setAttribute("errorMsg", "El descuento debe estar entre 0 y 100");
 			} else {
-				Producto updateProducto = productoService.updateProducto(producto, file);
+				Producto updateProducto = productoService.updateProducto(producto, file,categoria);
 				if (!ObjectUtils.isEmpty(updateProducto)) {
 					session.setAttribute("succMsg", "Actualizado con éxito");
 				} else {
@@ -274,6 +278,7 @@ public class AdminController {
 
 		return "redirect:/admin/editarProducto/" + producto.getId();
 	}
+
 	@GetMapping("/ExportarProductosPdf")
 	public ResponseEntity<InputStreamResource> exportarProductosPdf() {
 		List<Producto> productos = productoService.getAllProducto();
@@ -288,26 +293,33 @@ public class AdminController {
 
 		return ResponseEntity.ok().headers(headers).contentType(MediaType.APPLICATION_PDF)
 				.body(new InputStreamResource(bis));
-	    
+
+	}
+
+	@GetMapping("/ExportarProductosExcel")
+	public ResponseEntity<InputStreamResource> exportarProductosExcel() {
+		List<Producto> productos = productoService.getAllProducto();
+		ByteArrayInputStream bis = ProductosExcel.productosToExcel(productos);
+
+		if (bis == null) {
+			return ResponseEntity.internalServerError().build();
+		}
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-Disposition", "attachment; filename=productos.xlsx");
+
+		return ResponseEntity.ok().headers(headers)
+				.contentType(
+						MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
+				.body(new InputStreamResource(bis));
 	}
 	
-	@GetMapping("/ExportarProductosExcel")
-	 public ResponseEntity<InputStreamResource> exportarProductosExcel() {
-        List<Producto> productos = productoService.getAllProducto();
-        ByteArrayInputStream bis = ProductosExcel.productosToExcel(productos);
-
-        if (bis == null) {
-            return ResponseEntity.internalServerError().build();
-        }
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Disposition", "attachment; filename=productos.xlsx");
-
-        return ResponseEntity.ok()
-                .headers(headers)
-                .contentType(MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
-                .body(new InputStreamResource(bis));
-    }
-	
+	@GetMapping("/empleados")
+	public String empleados(Model model) {
+		List<User> empleados = userService.getAllEmpleado();
+		model.addAttribute("empleados", empleados);
+		
+		return "admin/empleados";
+	}
 
 }
