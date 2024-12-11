@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="~http://www.thymeleaf.org"
+	th:replace="~{user/base_user::Layout(~{::section})}">
+
+<head>
+<meta charset="UTF-8">
+<title>Recuperar contraseña</title>
+</head>
+
+<body>
+	 <!-- Sección de detalles -->
+    <section class="container mt-5">
+        <h1 class="text-center mb-4">[[${soporte.nombre}]]</h1>
+        <div class="row">
+            <div class="col-md-6">
+                <img src="https://via.placeholder.com/600x400" class="img-fluid" alt="Consultoría Técnica">
+            </div>
+            <div class="col-md-6">
+                <h2>Descripción</h2>
+                <p>Nuestra consultoría técnica está diseñada para resolver los problemas más complejos que puedas tener con tus sistemas, redes o dispositivos. Nuestros expertos están disponibles para ofrecerte un análisis profundo y soluciones efectivas.</p>
+
+                <h3>Detalles del Servicio</h3>
+                <ul>
+                    <li>Consultoría especializada para problemas avanzados.</li>
+                    <li>Asesoría en el diseño y optimización de infraestructuras tecnológicas.</li>
+                    <li>Revisión de sistemas y redes con recomendaciones personalizadas.</li>
+                    <li>Disponible de lunes a viernes de 9 AM a 5 PM.</li>
+                </ul>
+
+                <h3>Precio: $[[${soporte.precio}]] USD</h3>
+
+                <h4>¿Cómo funciona?</h4>
+				<ol>
+					<li>Haz clic en el botón de abajo para agendar tu cita.</li>
+					<li>Elige el personal segun especialidad</li>
+					<li>Elige una fecha y hora que te convenga.</li>
+					
+					<li>Recibirás un enlace de Zoom a tu area de citas de tu cuenta en la aplicacion</li>
+				</ol>
+				<form action="/paso1" method="post">
+
+					<input type="hidden" name="soporteId" th:value="${soporte.id}" />
+					<button type="submit" class="btn btn-primary">Agendar Cita</button>
+				</form>
+            </div>
+        </div>
+    </section>
+
+</body>
+
+</html>

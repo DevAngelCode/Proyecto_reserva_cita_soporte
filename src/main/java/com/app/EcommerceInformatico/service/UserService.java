@@ -19,4 +19,7 @@ public interface UserService {
 	public User getUserByToken(String Token);
 	public User updateUser(User user);
 	public List<User> getAllEmpleado();
+	public User getUserById(Long id);
+	public List<User> getUsersBySoporteId(Long id);
+	
 }

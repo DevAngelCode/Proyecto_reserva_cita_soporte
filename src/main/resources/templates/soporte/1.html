@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="~http://www.thymeleaf.org"
+	th:replace="~{user/base_user::Layout(~{::section})}">
+
+<head>
+<meta charset="UTF-8">
+<title>Recuperar contraseña</title>
+</head>
+
+<body>
+	<!-- Sección de detalles -->
+	<section class="container mt-5">
+		<h1 class="text-center mb-4">[[${soporte.nombre}]]</h1>
+		<div class="row">
+			<div class="col-md-6">
+				<img src="https://via.placeholder.com/600x400" class="img-fluid"
+					alt="Asistencia por Video Llamada">
+			</div>
+			<div class="col-md-6">
+				<h2>Descripción</h2>
+				<p>Recibe asistencia en vivo a través de una video llamada en
+					Zoom. Nuestro equipo de soporte estará disponible para guiarte en
+					la resolución de cualquier problema técnico que puedas tener. Este
+					servicio es ideal para problemas urgentes que requieren atención
+					directa y personalizada.</p>
+
+				<h3>Detalles del Servicio</h3>
+				<ul>
+					<li>Soporte en tiempo real a través de Zoom.</li>
+					<li>Resolución de problemas técnicos complejos.</li>
+					<li>Atención personalizada y de calidad.</li>
+					<li>Disponible de lunes a viernes de 9 AM a 6 PM.</li>
+				</ul>
+
+				<h3>Precio: $[[${soporte.precio}]] USD</h3>
+
+				<h4>¿Cómo funciona?</h4>
+				<ol>
+					<li>Haz clic en el botón de abajo para agendar tu cita.</li>
+					<li>Elige el personal segun especialidad</li>
+					<li>Elige una fecha y hora que te convenga.</li>
+
+					<li>Recibirás un enlace de Zoom a tu area de citas de tu
+						cuenta en la aplicacion</li>
+				</ol>
+				<form action="/paso1" method="post">
+
+					<input type="hidden" name="soporteId" th:value="${soporte.id}" />
+					<button type="submit" class="btn btn-primary">Agendar Cita</button>
+				</form>
+			</div>
+		</div>
+	</section>
+
+</body>
+
+</html>

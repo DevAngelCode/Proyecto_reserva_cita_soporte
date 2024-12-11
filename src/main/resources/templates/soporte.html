@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="~http://www.thymeleaf.org"
+	th:replace="~{user/base_user::Layout(~{::section})}">
+
+<head>
+<meta charset="UTF-8">
+<title>Recuperar contraseña</title>
+</head>
+
+<body>
+	 <!-- Sección principal -->
+    <section class="container mt-5">
+        <h1 class="text-center mb-4">Soporte Técnico Online</h1>
+        <p class="text-center mb-5">Aquí puedes obtener más información sobre nuestros servicios de soporte técnico online. ¡Elige el servicio que más te convenga!</p>
+
+        <!-- Fila de tarjetas -->
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            <!-- Card 1: Asistencia por Video Llamada -->
+            <div class="col">
+                <div class="card">
+                    <img src="https://via.placeholder.com/150" class="card-img-top" alt="Asistencia por Video Llamada">
+                    <div class="card-body">
+                        <h5 class="card-title">Asistencia por Video Llamada</h5>
+                        <p class="card-text">Recibe asistencia en vivo a través de Zoom para resolver tus problemas técnicos en tiempo real.</p>
+                        <!-- <p class="card-text"><strong>Precio: $80 USD</strong></p>-->
+                        <a href="/soporte/1" class="btn btn-primary">Ver Más</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 2: Consultoría Técnica -->
+            <div class="col">
+                <div class="card">
+                    <img src="https://via.placeholder.com/150" class="card-img-top" alt="Consultoría Técnica">
+                    <div class="card-body">
+                        <h5 class="card-title">Consultoría Técnica</h5>
+                        <p class="card-text">Agenda una sesión de consultoría técnica especializada. Perfecto para resolver problemas complejos.</p>
+                        <!-- <p class="card-text"><strong>Precio: $80 USD</strong></p>-->
+                        <a href="/soporte/2" class="btn btn-primary">Ver Más</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 3: Diagnóstico Remoto -->
+            <div class="col">
+                <div class="card">
+                    <img src="https://via.placeholder.com/150" class="card-img-top" alt="Diagnóstico Remoto">
+                    <div class="card-body">
+                        <h5 class="card-title">Diagnóstico Remoto</h5>
+                        <p class="card-text">Realiza un diagnóstico remoto para identificar problemas técnicos en tu equipo.</p>
+                        <!-- <p class="card-text"><strong>Precio: $80 USD</strong></p>-->
+                        <a href="/soporte/3" class="btn btn-primary">Ver Más</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </section>
+
+</body>
+
+</html>

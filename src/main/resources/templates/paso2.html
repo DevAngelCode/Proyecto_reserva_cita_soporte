@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="~http://www.thymeleaf.org"
+	th:replace="~{user/base_user::Layout(~{::section})}">
+
+<head>
+<meta charset="UTF-8">
+<title></title>
+</head>
+
+<body>
+	<!-- Sección de detalles -->
+	<section class="container mt-5">
+
+		<h2 class="text-center mb-4">Selecciona una fecha para Generar tu
+			Cita</h2>
+
+
+		<th:block th:if="${session.succMsg}">
+			<p class="text-success fw-bold">[[${session.succMsg}]]</p>
+			<th:block th:text="${@commomServiceImpl.removeSessionMessage()}"></th:block>
+		</th:block>
+		<th:block th:if="${session.errorMsg}">
+			<p class="text-danger fw-bold">[[${session.errorMsg}]]</p>
+			<th:block th:text="${@commomServiceImpl.removeSessionMessage()}"></th:block>
+
+		</th:block>
+
+		<div class="alert alert-info" role="alert">Servicio
+			Seleccionado: [[${soporte.nombre}]]</div>
+
+		<!-- Formulario para empleado 1 -->
+		<div class="row card" th:each="empleado : ${empleados}">
+
+			<form action="/paso2" method="POST">
+				 <input type="hidden"
+					name="id" th:value="${empleado.id}">
+
+				<!-- Selección de fecha -->
+				<label for="fecha">Selecciona una fecha:</label> <input type="date"
+					name="fecha" id="fecha" th:value="${fechaSeleccionada}"
+					th:min="${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}"
+					required> <br>
+
+
+				<!-- Botón para cargar horarios disponibles -->
+				<button type="submit">Ver horarios disponibles</button>
+			</form>
+
+
+			<div class="col-md-2 text-center">
+				<!--<img th:src="'/img/img_empleado/'+${empleado.imagen}" alt="Empleado"
+					class="img-fluid rounded-circle">-->
+			</div>
+			<div class="col-md-10">
+				<div class="">
+					<div class="card-body">
+						<p class="card-title
+							">Nombre: [[${empleado.nombre}]]</p>
+						<p class="card-text">Direccion: [[${empleado.direccion}]]</p>
+
+						<p class="card-text">Ciudad: [[${empleado.ciudad}]]</p>
+						<p class="card-text">Especialidad: [[${empleado.soporte.nombre}]]</p>
+
+					</div>
+				</div>
+
+			</div>
+
+
+
+		</div>
+		<br>
+		<th:block th:unless="
+							${empleados.size>
+							0}">
+			<div class="alert alert-warning text-center" role="alert">
+				<i class="fas fa-exclamation-circle"></i> No hay empleados
+				disponibles para el servicio
+			</div>
+		</th:block>
+	</section>
+
+</body>
+
+</html>

@@ -1,11 +1,29 @@
 <!DOCTYPE html>
-<html>
+<html lang="es" xmlns:th="~http://www.thymeleaf.org"
+	th:replace="~{empleado/base_empleado::Layout(~{::section})}">
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
 <body>
-<h1>Bienvenido empleado</h1>
+	<section>
+		<main class="p-3">
+			<div class="container-fluid">
+				<div class="mb-3 text-center">
+					<h1 class="display-5">
+						Bienvenido al panel de Empleados:  <strong>
+							[[${user.nombre}]]</strong>
+					</h1>
+					<div
+						class="content d-flex justify-content-center align-items-center">
 
+						<img class="image1 img-fluid" src="/img/1.png" width="500"
+							height="500" />
+					</div>
+				</div>
+			</div>
+		</main>
+
+	</section>
 </body>
 </html>

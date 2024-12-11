@@ -125,4 +125,18 @@ public class UserServiceImpl implements UserService {
 		return userRepository.findByRol("ROLE_EMPLOYEE");
 	}
 
+	@Override
+	public User getUserById(Long id) {
+		User user = userRepository.findById(id).get();
+
+		return user;
+	}
+
+	//empleados
+	@Override
+	public List<User> getUsersBySoporteId(Long id) {
+		List<User> empleados = userRepository.findBySoporteId(id);
+		return empleados;
+	}
+
 }
