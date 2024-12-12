@@ -21,5 +21,6 @@ public interface UserService {
 	public List<User> getAllEmpleado();
 	public User getUserById(Long id);
 	public List<User> getUsersBySoporteId(Long id);
+	public void deleteUser(Long id);
 	
 }

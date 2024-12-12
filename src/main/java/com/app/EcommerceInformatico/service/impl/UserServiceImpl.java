@@ -12,6 +12,7 @@ import com.app.EcommerceInformatico.model.User;
 import com.app.EcommerceInformatico.repository.UserRepository;
 import com.app.EcommerceInformatico.service.UserService;
 import com.app.EcommerceInformatico.util.AppConstant;
+
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -27,6 +28,7 @@ public class UserServiceImpl implements UserService {
 		user.setIsEnable(true);
 		user.setCuentaNoBloqueada(true);
 		user.setIntentosFallidos(0);
+		user.setImagenPerfil("default.jpg");
 		String encodePassword = passwordEncoder.encode(user.getPassword());
 		user.setPassword(encodePassword);
 		User saveUser = userRepository.save(user);
@@ -35,13 +37,11 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User getUserByEmail(String email) {
-		// TODO Auto-generated method stub
 		return userRepository.findByEmail(email);
 	}
 
 	@Override
 	public List<User> getUsers(String role) {
-		// TODO Auto-generated method stub
 		return userRepository.findByRol(role);
 	}
 
@@ -132,11 +132,18 @@ public class UserServiceImpl implements UserService {
 		return user;
 	}
 
-	//empleados
+	// empleados
 	@Override
 	public List<User> getUsersBySoporteId(Long id) {
-		List<User> empleados = userRepository.findBySoporteId(id);
+		List<User> empleados = userRepository.findByIsEnableAndSoporteId(true, id);
 		return empleados;
+	}
+
+	@Override
+	public void deleteUser(Long id) {
+		userRepository.deleteById(id);
+
+		
 	}
 
 }

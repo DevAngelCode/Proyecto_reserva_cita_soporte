@@ -26,4 +26,5 @@ public class Soporte {
 	private List<User> users;
 	private String nombre;
 	private Double precio;
+	private Boolean estado;
 }

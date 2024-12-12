@@ -24,6 +24,8 @@ public class EmpleadoController {
 			String email = p.getName();
 			User userDtls = userService.getUserByEmail(email);
 			model.addAttribute("user", userDtls);
+			userDtls.setIntentosFallidos(0);
+
 			// Integer countCart = cartService.getCounrCart(userDtls.getId());
 			// model.addAttribute("countCart", countCart);
 

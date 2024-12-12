@@ -56,6 +56,8 @@ public class PrincipalController {
 			String email = p.getName();
 			User userDtls = userService.getUserByEmail(email);
 			model.addAttribute("user", userDtls);
+			userDtls.setIntentosFallidos(0);
+
 			// Integer countCart = cartService.getCounrCart(userDtls.getId());
 			// model.addAttribute("countCart", countCart);
 
@@ -79,6 +81,7 @@ public class PrincipalController {
 	// save user
 	@PostMapping("/registrar")
 	public String saveUser(@ModelAttribute User user, HttpSession session) throws IOException {
+		
 		User saveUser = userService.saveUser(user);
 		if (!ObjectUtils.isEmpty(saveUser)) {
 
@@ -234,8 +237,8 @@ public class PrincipalController {
 	}
 
 	@PostMapping("/paso2")
-	public String paso2(@RequestParam Long id, @RequestParam String fecha, HttpSession session) {
-		session.setAttribute("id", id);
+	public String paso2(@RequestParam Long empleadoId, @RequestParam String fecha, HttpSession session) {
+		session.setAttribute("empleadoId", empleadoId);
 		session.setAttribute("fecha", fecha);
 		
 
@@ -244,12 +247,12 @@ public class PrincipalController {
 
 	@GetMapping("/paso3")
 	public String paso3(HttpSession session, Model model) {
-		Long id = (Long) session.getAttribute("id");
+		Long empleadoId = (Long) session.getAttribute("empleadoId");
 		String fecha = (String) session.getAttribute("fecha");
-		if (id == null || fecha == null) {
+		if (empleadoId == null || fecha == null) {
 			return "redirect:/paso2";
 		}
-		User empleado = userService.getUserById(id);
+		User empleado = userService.getUserById(empleadoId);
 		model.addAttribute("empleado", empleado);
 
 		// Obtener la fecha seleccionada
@@ -263,7 +266,7 @@ public class PrincipalController {
 		}
 		// Generar horarios disponibles
 		List<LocalTime> horarios = generarHorariosValidos(fechaSeleccionada, fechaActual, horaActual);
-		List<Cita> citas = citaService.obtenerCitasPorEmpleadoYFecha(id, fechaSeleccionada);
+		List<Cita> citas = citaService.obtenerCitasPorEmpleadoYFecha(empleadoId, fechaSeleccionada);
 		// Eliminar los horarios que ya están ocupados
 		for (Cita cita : citas) {
 			horarios.remove(cita.getHora());
@@ -319,6 +322,26 @@ public class PrincipalController {
 		}
 
 		return horarios;
+	}
+	// Registrar una nueva cita
+	@PostMapping("/reservar")
+	public String reservar(@RequestParam("empleadoId") Long empleadoId, @RequestParam("fecha") String fecha,
+			@RequestParam("hora") String hora, HttpSession session) {
+		session.setAttribute("empleadoId", empleadoId);
+		session.setAttribute("fecha", fecha);
+		session.setAttribute("hora", hora);
+		
+
+		// var empleado = empleadoService.obtenerEmpleado(empleadoId);
+
+		/*
+		 * Cita cita = new Cita(); cita.setEmpleado(empleado);
+		 * cita.setFecha(LocalDate.parse(fecha)); cita.setHora(LocalTime.parse(hora));
+		 */
+
+		// citaService.guardarCita(cita);
+
+		return "redirect:/user/reservar";
 	}
 
 }

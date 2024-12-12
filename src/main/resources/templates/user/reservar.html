@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="~http://www.thymeleaf.org"
+	th:replace="~{user/base_user::Layout(~{::section})}">
+
+<head>
+<meta charset="UTF-8">
+<title></title>
+</head>
+
+<body>
+	<section>
+		<div class="container mt-5 ">
+			<h2 class="text-center mb-4">Detalle de tu cita</h2>
+
+			<th:block th:if="${session.succMsg}">
+				<p class="text-success fw-bold">[[${session.succMsg}]]</p>
+				<th:block th:text="${@commomServiceImpl.removeSessionMessage()}"></th:block>
+			</th:block>
+			<th:block th:if="${session.errorMsg}">
+				<p class="text-danger fw-bold">[[${session.errorMsg}]]</p>
+				<th:block th:text="${@commomServiceImpl.removeSessionMessage()}"></th:block>
+
+			</th:block>
+
+			<form action="/user/enviarCita" method="post">
+				<!-- Cita Detalle -->
+				<div class="quote-detail">
+					<h5>
+						<strong>Detalles de tu Cita:</strong>
+					</h5>
+					<input type="hidden" name="empleadoId" th:value="${empleado.id}">
+					<input type="hidden" name="usuarioId" th:value="${user.id}">
+					<input type="hidden" name="fecha" th:value="${fecha}"> <input
+						type="hidden" name="hora" th:value="${hora}">
+					<p>
+						<strong>Cliente:</strong> [[${user.nombre}]]
+					</p>
+					<p>
+						<strong>Servicio:</strong> [[${empleado.soporte.nombre}]]
+					</p>
+
+
+					<p>
+						<strong>Empleado:</strong> [[${empleado.nombre}]]
+					</p>
+					<p>
+						<strong>Fecha:</strong> [[${fecha}]]
+					</p>
+					<p>
+						<strong>Horario:</strong> [[${hora}]]
+					</p>
+					<!-- Agregar el valor de la hora seleccionada aquí -->
+				</div>
+
+				<!-- Botón para confirmar la cita -->
+				<div class="d-grid gap-2 mt-4">
+					<button class="btn btn-primary" type="submit">Confirmar
+						Cita</button>
+				</div>
+			</form>
+
+			<a class="btn btn-primary" href="/paso3">Regresar</a>
+
+
+
+			<th:block th:if="${session.succMsg}">
+				<p class="text-success fw-bold">[[${session.succMsg}]]</p>
+				<th:block th:text="${@commomServiceImpl.removeSessionMessage()}"></th:block>
+			</th:block>
+			<th:block th:if="${session.errorMsg}">
+				<p class="text-danger fw-bold">[[${session.errorMsg}]]</p>
+				<th:block th:text="${@commomServiceImpl.removeSessionMessage()}"></th:block>
+
+			</th:block>
+		</div>
+	</section>
+
+</body>
+
+</html>

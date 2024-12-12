@@ -15,6 +15,11 @@ public interface UserRepository extends JpaRepository<User, Long> {
 	public User findByResetToken(String Token);
 
 
-	public List<User> findBySoporteId(Long id);
+
+	//lista de usuarios por soporte y isEnable 
+	public List<User> findByIsEnableAndSoporteId(Boolean isEnable,Long soporte);
+	
+	
+	
 
 }

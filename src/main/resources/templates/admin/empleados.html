@@ -39,7 +39,13 @@
 						<thead>
 							<tr>
 								<th scope="col">ID</th>
-								<th scope="col">Nombre</th>
+								<th scope="col">Nombre Completo</th>
+								<th scope="col">Telefono</th>
+								<th scope="col">Correo</th>
+								<th scope="col">Contraseña</th>
+								<th scope="col">Dirección</th>
+								<th scope="col">Ciudad</th>
+								<th scope="col">Especialidad</th>
 								<th scope="col">Estado</th>
 								<th scope="col">Imagen</th>
 
@@ -50,9 +56,14 @@
 							<tr th:each="e, c : ${empleados} ">
 								<th scope="row">[[${c.count}]]</th>
 								<td>[[${e.nombre}]]</td>
+								<td>[[${e.celular}]]</td>
+								<td>[[${e.email}]]</td>
+								<td>[[${e.password}]]</td>
+								<td>[[${e.direccion}]]</td>
+								<td>[[${e.ciudad}]]</td>
+								<td>[[${e.soporte.nombre}]]</td>
 								<td>[[${e.isEnable}]]</td>
-								<td><img
-									th:src="@{'/img/user_img/'+${e.imagenPerfil}}"
+								<td><img th:src="@{'/img/usuario_img/'+${e.imagenPerfil}}"
 									class="img-fluid" width="70px" /></td>
 
 								<td>
@@ -62,9 +73,9 @@
 											Opciones</button>
 										<ul class="dropdown-menu">
 											<li><a class="dropdown-item"
-												th:href="@{'/admin/editarCategoria/'+${e.id}}">Editar</a></li>
+												th:href="@{'/admin/cambiarEstadoEmpleado/'+${e.id}}">Cambiar Estado</a></li>
 											<li><a class="dropdown-item"
-												th:href="@{'/admin/eliminarCategoria/'+${e.id}}">Eliminar</a></li>
+												th:href="@{'/admin/eliminarEmpleado/'+${e.id}}">Eliminar</a></li>
 										</ul>
 									</div>
 								</td>
@@ -79,26 +90,74 @@
 					<div
 						class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
 						<div class="modal-content">
-							<form action="/admin/saveCategoria" method="post"
+							<form action="/admin/saveEmpleado" method="post"
 								enctype="multipart/form-data">
 								<div class="modal-header">
 									<h1 class="modal-title fs-5" id="exampleModalLabel">Agregar
-										Categoría</h1>
+										Empleado</h1>
 									<button type="button" class="btn-close" data-bs-dismiss="modal"
 										aria-label="Close"></button>
 								</div>
 								<div class="modal-body">
 									<!-- Nombre -->
 									<div class="mb-3">
-										<label for="categoryName" class="form-label">Nombre de
-											la Categoría</label> <input type="text" class="form-control"
-											id="categoryName" name="nombre"
-											placeholder="Nombre de la Categoría" required>
+										<label for="Name" class="form-label">Nombre del
+											Empleado</label> <input type="text" class="form-control" id="Name"
+											name="nombre" placeholder="Nombre del empleado" required>
 									</div>
+									<!-- Telefono -->
+									<div class="mb-3">
+										<label for="categoryPhone" class="form-label">Telefono</label>
+										<input type="text" class="form-control" id="categoryPhone"
+											name="celular" placeholder="Telefono" required>
+									</div>
+									<!-- Correo -->
+									<div class="mb-3">
+										<label for="categoryEmail" class="form-label">Correo</label> <input
+											type="email" class="form-control" id="categoryEmail"
+											name="email" placeholder="Correo" required>
+									</div>
+									<!-- Contraseña -->
+									<div class="mb-3">
+										<label for="categoryPassword" class="form-label">Contraseña</label>
+										<input type="password" class="form-control"
+											id="categoryPassword" name="password"
+											placeholder="Contraseña" required>
+									</div>
+									<!-- Dirección -->
+									<div class="row">
+										<div class=" col mb-3">
+											<label for="categoryAddress" class="form-label">Dirección</label>
+											<input type="text" class="form-control" id="categoryAddress"
+												name="direccion" placeholder="Dirección" required>
+										</div>
+										<!-- Ciudad -->
+										<div class="col mb-3">
+											<label for="categoryCity" class="form-label">Ciudad</label> <input
+												type="text" class="form-control" id="categoryCity"
+												name="ciudad" placeholder="Ciudad" required>
+										</div>
+
+									</div>
+
+									<!-- soporte -->
+									<div class="mb-3">
+										<label for="Soporte" class="form-label">Especialidad</label> <select
+											class="form-select" id="Soporte" name="soporteId">
+											<option th:each="s:${soportes}" th:value="${s.id}">[[${s.nombre}]]</option>
+										</select>
+									</div>
+
+
+
+
+
+
 									<!-- Estado -->
 									<div class="mb-3">
 										<label for="categoryStatus" class="form-label">Estado</label>
-										<select class="form-select" id="categoryStatus" name="estado">
+										<select class="form-select" id="categoryStatus"
+											name="isEnable">
 											<option value="true">Activo</option>
 											<option value="false">Inactivo</option>
 										</select>
@@ -106,7 +165,7 @@
 									<!-- Imagen -->
 									<div class="mb-3">
 										<label for="categoryImage" class="form-label">Imagen
-											de la Categoría</label> <input type="file" class="form-control"
+											del empleado</label> <input type="file" class="form-control"
 											id="categoryImage" name="file">
 									</div>
 								</div>

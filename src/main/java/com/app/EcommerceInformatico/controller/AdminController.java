@@ -17,6 +17,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.ObjectUtils;
@@ -32,11 +33,13 @@ import com.app.EcommerceInformatico.excel.CategoriasExcel;
 import com.app.EcommerceInformatico.excel.ProductosExcel;
 import com.app.EcommerceInformatico.model.Categoria;
 import com.app.EcommerceInformatico.model.Producto;
+import com.app.EcommerceInformatico.model.Soporte;
 import com.app.EcommerceInformatico.model.User;
 import com.app.EcommerceInformatico.pdf.CategoriasPdf;
 import com.app.EcommerceInformatico.pdf.ProductosPdf;
 import com.app.EcommerceInformatico.service.CategoriaService;
 import com.app.EcommerceInformatico.service.ProductoService;
+import com.app.EcommerceInformatico.service.SoporteService;
 import com.app.EcommerceInformatico.service.UserService;
 
 import jakarta.servlet.http.HttpSession;
@@ -50,6 +53,10 @@ public class AdminController {
 	private ProductoService productoService;
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private SoporteService soporteService;
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
 	@ModelAttribute
 	public void getUserDetails(Principal p, Model model) {
@@ -57,20 +64,18 @@ public class AdminController {
 			String email = p.getName();
 			User userDtls = userService.getUserByEmail(email);
 			model.addAttribute("user", userDtls);
-			// Integer countCart = cartService.getCounrCart(userDtls.getId());
-			// model.addAttribute("countCart", countCart);
+			userDtls.setIntentosFallidos(0);
+
+			
 
 		}
-		// List<Category> allActiveCategory = categoryService.getAllActiveCategory();
-		// model.addAttribute("categorys", allActiveCategory);
+		
 	}
 
 	@GetMapping("/")
 	public String home() {
 		return "admin/home";
 	}
-
-	
 
 	@GetMapping("/categorias")
 	public String categorias(Model model) {
@@ -193,6 +198,7 @@ public class AdminController {
 		return ResponseEntity.ok().headers(headers).contentType(MediaType.APPLICATION_OCTET_STREAM)
 				.body(new InputStreamResource(bis));
 	}
+
 	@GetMapping("/productos")
 	public String productos(Model model) {
 		model.addAttribute("productos", productoService.getAllProducto());
@@ -201,8 +207,8 @@ public class AdminController {
 	}
 
 	@PostMapping("/saveProducto")
-	public String saveProducto(@RequestParam Long categoriaId,@ModelAttribute Producto producto, @RequestParam MultipartFile file, HttpSession session)
-			throws IOException {
+	public String saveProducto(@RequestParam Long categoriaId, @ModelAttribute Producto producto,
+			@RequestParam MultipartFile file, HttpSession session) throws IOException {
 		String imageName = file != null && !file.isEmpty() ? file.getOriginalFilename() : "default.jpg";
 		producto.setImagen(imageName);
 		producto.setDescuento(0);
@@ -253,8 +259,8 @@ public class AdminController {
 	}
 
 	@PostMapping("/updateProducto")
-	public String updateProducto(@RequestParam Long categoriaId,@ModelAttribute Producto producto, @RequestParam MultipartFile file,
-			HttpSession session) throws IOException {
+	public String updateProducto(@RequestParam Long categoriaId, @ModelAttribute Producto producto,
+			@RequestParam MultipartFile file, HttpSession session) throws IOException {
 
 		Producto oldProducto = productoService.getProductoById(producto.getId());
 		Boolean existProduct = productoService.existProducto(producto.getNombre());
@@ -266,7 +272,7 @@ public class AdminController {
 			if (producto.getDescuento() < 0 || producto.getDescuento() > 100) {
 				session.setAttribute("errorMsg", "El descuento debe estar entre 0 y 100");
 			} else {
-				Producto updateProducto = productoService.updateProducto(producto, file,categoria);
+				Producto updateProducto = productoService.updateProducto(producto, file, categoria);
 				if (!ObjectUtils.isEmpty(updateProducto)) {
 					session.setAttribute("succMsg", "Actualizado con éxito");
 				} else {
@@ -313,13 +319,116 @@ public class AdminController {
 						MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
 				.body(new InputStreamResource(bis));
 	}
-	
+
 	@GetMapping("/empleados")
 	public String empleados(Model model) {
 		List<User> empleados = userService.getAllEmpleado();
+		List<Soporte> soportes = soporteService.getAllSoporte();
 		model.addAttribute("empleados", empleados);
-		
+		model.addAttribute("soportes", soportes);
+
 		return "admin/empleados";
 	}
+
+	@PostMapping("/saveEmpleado")
+	public String saveEmpleado(@RequestParam String nombre, 
+	                           @RequestParam String celular, 
+	                           @RequestParam String email, 
+	                           @RequestParam String password, 
+	                           @RequestParam String direccion, 
+	                           @RequestParam String ciudad, 
+	                           @RequestParam Long soporteId, 
+	                           MultipartFile file, 
+	                           HttpSession session) throws IOException {
+
+	    // Verifica si el email ya existe, si es así, evitar la creación de un nuevo usuario con el mismo email
+	    if (userService.getUserByEmail(email) != null) {
+	        session.setAttribute("errorMsg", "El correo electrónico ya está registrado.");
+	        return "redirect:/admin/empleados";
+	    }
+
+	    // Crea un nuevo usuario
+	    User nuevoEmpleado = new User();
+	    nuevoEmpleado.setNombre(nombre);
+	    nuevoEmpleado.setCelular(celular);
+	    nuevoEmpleado.setEmail(email);
+
+	    // Codificar la contraseña
+	    String encode = passwordEncoder.encode(password);
+	    nuevoEmpleado.setPassword(encode);
+
+	    nuevoEmpleado.setDireccion(direccion);
+	    nuevoEmpleado.setCiudad(ciudad);
+
+	    // Establecer el soporte relacionado
+	    Soporte soporte = soporteService.getSoporteById(soporteId);
+	    nuevoEmpleado.setSoporte(soporte);
+
+	    // Establecer el rol como ROLE_EMPLOYEE
+	    nuevoEmpleado.setRol("ROLE_EMPLOYEE");
+
+	    // Establecer el estado (activo) y otros campos iniciales
+	    nuevoEmpleado.setIsEnable(true);
+	    nuevoEmpleado.setCuentaNoBloqueada(true);
+	    nuevoEmpleado.setIntentosFallidos(0);
+
+	    // Asignar una imagen por defecto si no se carga una nueva
+	    String imageName = file != null && !file.isEmpty() ? file.getOriginalFilename() : "default.jpg";
+	    nuevoEmpleado.setImagenPerfil(imageName);
+
+	    // Guardar el nuevo empleado en la base de datos
+	    User savedEmpleado = userService.updateUser(nuevoEmpleado);  // Método para crear el usuario
+
+	    if (savedEmpleado == null) {
+	        session.setAttribute("errorMsg", "Error al guardar el nuevo empleado.");
+	    } else {
+	        // Si se cargó una imagen, guardarla en el servidor
+	        if (file != null && !file.isEmpty()) {
+	            File saveFile = new ClassPathResource("static/img").getFile();
+	            Path path = Paths.get(saveFile.getAbsolutePath() + File.separator + "usuario_img" + File.separator
+	                    + file.getOriginalFilename());
+	            Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+	        }
+
+	        session.setAttribute("succMsg", "Empleado creado con éxito.");
+	    }
+
+	    return "redirect:/admin/empleados";  // Redirige a la lista de empleados
+	}
+	
+	//cambiar estado de empleado
+	@GetMapping("/cambiarEstadoEmpleado/{id}")
+	public String cambiarEstadoEmpleado(@PathVariable Long id, HttpSession session) {
+		User empleado = userService.getUserById(id);
+		if (empleado.getIsEnable()) {
+			empleado.setIsEnable(false);
+		} else {
+			empleado.setIsEnable(true);
+		}
+		userService.updateUser(empleado);
+		session.setAttribute("succMsg", "Estado actualizado con éxito");
+		return "redirect:/admin/empleados";
+	}
+	//eliminar empleado
+	@GetMapping("/eliminarEmpleado/{id}")
+	public String eliminarEmpleado(@PathVariable Long id, HttpSession session) {
+		try {
+			userService.deleteUser(id);
+			session.setAttribute("succMsg", "Empleado eliminado con éxito");
+		} catch (Exception e) {
+			session.setAttribute("errorMsg", "No se puede eliminar, este empleado está asociado con soporte");
+		}
+		return "redirect:/admin/empleados";
+	}
+	
+	
+	//servicio
+	@GetMapping("/servicios")
+	public String servicios(Model model) {
+		List<Soporte> soportes = soporteService.getAllSoporte();
+		model.addAttribute("soportes", soportes);
+		return "admin/servicios";
+	}
+	
 
 }
