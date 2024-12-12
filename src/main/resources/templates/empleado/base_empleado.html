@@ -14,8 +14,20 @@
 	rel="stylesheet"
 	integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
 	crossorigin="anonymous">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css"
+	integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ=="
+	crossorigin="anonymous" referrerpolicy="no-referrer" />
 <link rel="stylesheet" href="/css/style.css">
 
+<style type="text/css">
+.profile-pic {
+	width: 120px;
+	height: 120px;
+	border-radius: 50%;
+	object-fit: cover;
+}
+</style>
 </head>
 
 <body>
@@ -31,23 +43,26 @@
 				</div>
 			</div>
 			<ul class="sidebar-nav">
-				
+
 				<li class="sidebar-item"><a href="#"
 					class="sidebar-link collapsed has-dropdown"
 					data-bs-toggle="collapse" data-bs-target="#ordenes"
 					aria-expanded="false" aria-controls="auth"> <i
-						class="bi bi-clipboard-check-fill"></i> <span>Ordenes</span>
+						class="bi bi-clipboard-check-fill"></i> <span>Citas</span>
 				</a>
 					<ul id="ordenes" class="sidebar-dropdown list-unstyled collapse"
 						data-bs-parent="#sidebar">
-						
+
 						<li class="sidebar-item"><a href="/empleado/citas"
 							class="sidebar-link">Citas</a></li>
+						<li class="sidebar-item"><a href="/empleado/citasPasadas"
+							class="sidebar-link">Citas Pasadas</a></li>
+
 					</ul></li>
-				
+
 			</ul>
 			<div class="sidebar-footer">
-				<a href="#" class="sidebar-link"> <i
+				<a href="/empleado/editarPerfil" class="sidebar-link"> <i
 					class="bi bi-person-fill"></i> <span>Perfíl</span>
 				</a> <a href="/logout" class="sidebar-link"> <i
 					class="bi bi-box-arrow-in-left"></i> <span>Salir</span>

@@ -423,6 +423,19 @@ public class AdminController {
 		return "admin/servicios";
 	}
 
+	@PostMapping("/saveServicio")
+	public String saveServicio(@ModelAttribute Soporte soporte, HttpSession session) {
+
+		Soporte saveSoporte = soporteService.saveSoporte(soporte);
+		if (ObjectUtils.isEmpty(saveSoporte)) {
+			session.setAttribute("errorMsg", "Error al guardar el servicio");
+		} else {
+			session.setAttribute("succMsg", "Servicio guardado con éxito");
+		}
+
+		return "redirect:/admin/servicios";
+	}
+
 	@GetMapping("/editarServicio/{id}")
 	public String editarServicio(@PathVariable Long id, Model model) {
 		Soporte soporte = soporteService.getSoporteById(id);
@@ -441,6 +454,19 @@ public class AdminController {
 		}
 
 		return "redirect:/admin/editarServicio/" + soporte.getId();
+	}
+
+	@GetMapping("/eliminarServicio/{id}")
+
+	public String eliminarServicio(@PathVariable Long id, HttpSession session) {
+		try {
+			soporteService.deleteSoporte(id);
+			session.setAttribute("succMsg", "Eliminado con éxito");
+		} catch (Exception e) {
+			session.setAttribute("errorMsg", "No se puede eliminar, este servicio está asociado con empleados");
+		}
+		return "redirect:/admin/servicios";
+
 	}
 
 	// editar perfil

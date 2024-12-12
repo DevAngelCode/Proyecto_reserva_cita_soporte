@@ -108,8 +108,11 @@ public class UserController {
 
 	// citas
 	@GetMapping("/citas")
-	public String citas(Model model) {
-		List<Cita> citas = citaService.getCitasByEstado(true);
+	public String citas(Principal p, Model model) {
+		User userDtls = userService.getUserByEmail(p.getName());
+
+		// obtener citas mias y q sea true
+		List<Cita> citas = citaService.getCitasByEstadoAndUserId(true, userDtls.getId());
 		model.addAttribute("citas", citas);
 
 		return "user/citas";
@@ -138,8 +141,10 @@ public class UserController {
 
 	// citaspasadas
 	@GetMapping("/citasPasadas")
-	public String citasPasadas(Model model) {
-		List<Cita> citas = citaService.getCitasByEstado(false);
+	public String citasPasadas(Principal p, Model model) {
+
+		User userDtls = userService.getUserByEmail(p.getName());
+		List<Cita> citas = citaService.getCitasByEstadoAndUserId(false, userDtls.getId());
 		model.addAttribute("citas", citas);
 
 		return "user/citasPasadas";

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="~http://www.thymeleaf.org"
+	th:replace="~{empleado/base_empleado::Layout(~{::section})}">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<section class="container mt-3">
+		<div class="row justify-content-center">
+			<div class="col-sm-10 mt-3 mb-3">
+				<div class="card shadow-lg border-light">
+					<div class="card-body">
+						<h4 class="card-title text-center mb-4">Editar Perfil</h4>
+
+						<th:block th:if="${session.succMsg}">
+							<p class="text-success fw-bold">[[${session.succMsg}]]</p>
+							<th:block th:text="${@commomServiceImpl.removeSessionMessage()}"></th:block>
+						</th:block>
+						<th:block th:if="${session.errorMsg}">
+							<p class="text-danger fw-bold">[[${session.errorMsg}]]</p>
+							<th:block th:text="${@commomServiceImpl.removeSessionMessage()}"></th:block>
+						</th:block>
+
+						<!-- Formulario para editar perfil -->
+						<form action="/empleado/update_perfil" method="post"
+							enctype="multipart/form-data">
+							<div class="form-group text-center">
+								<img th:src="'/img/usuario_img/'+${user.imagenPerfil}"
+									alt="Foto de Perfil" class="profile-pic mb-3"> <input
+									type="file" class="form-control-file" id="profilePic"
+									name="file">
+							</div>
+
+							<input type="hidden" name="id" th:value="${user.id}" />
+
+							<div class="form-group">
+								<label for="name"><i class="fas fa-user"></i> Nombre</label> <input
+									type="text" name="nombre" th:value="${user.nombre}"
+									class="form-control" id="name" placeholder="Tu nombre">
+							</div>
+
+							<div class="form-group">
+								<label for="phone"><i class="fas fa-phone-alt"></i>
+									Teléfono</label> <input type="number" name="celular"
+									th:value="${user.celular}" class="form-control" id="phone"
+									placeholder="Tu teléfono">
+							</div>
+
+							<div class="form-group">
+								<label for="email"><i class="fas fa-envelope"></i>
+									Correo Electrónico</label> <input type="email" class="form-control"
+									name="email" th:value="${user.email}" id="email"
+									placeholder="Tu correo electrónico" disabled>
+							</div>
+							<div class="form-group">
+								<label for="direccion"> <i class="fas fa-map-marker-alt"></i>
+									Dirección
+								</label> <input type="text" name="direccion"
+									th:value="${user.direccion}" class="form-control"
+									id="direccion" placeholder="Tu dirección">
+							</div>
+							<div class="form-group">
+								<label for="ciudad"><i class="fas fa-city"></i> Ciudad</label> <input
+									type="text" name="ciudad" th:value="${user.ciudad}"
+									class="form-control" id="ciudad" placeholder="Tu ciudad">
+							</div>
+							<div class="form-group">
+								<label for="codigoPostal"><i class="fas fa-map-pin"></i>
+									Código Postal</label> <input type="number" name="codigoPostal"
+									th:value="${user.codigoPostal}" class="form-control"
+									id="codigoPostal" placeholder="Tu código postal">
+
+
+
+							</div>
+							<button type="submit" class="btn btn-primary btn-block mt-3">
+								<i class="fas fa-save"></i> Guardar Cambios
+							</button>
+						</form>
+
+						<hr>
+
+						<!-- Formulario para cambiar la contraseña -->
+						<p class="text-muted">
+							<i class="fas fa-lock"></i> Si deseas cambiar la contraseña,
+							completa los siguientes campos:
+						</p>
+
+						<form action="/empleado/cambiarContrasena" method="post">
+							<input type="hidden" name="userId" th:value="${user.id}" />
+							<div class="form-group">
+								<label for="password">Contraseña Actual</label> <input
+									type="password" class="form-control" id="password"
+									name="password" placeholder="Contraseña actual" required>
+							</div>
+
+							<div class="form-group">
+								<label for="newPassword">Nueva Contraseña</label> <input
+									type="password" class="form-control" id="newPassword"
+									name="newPassword" placeholder="Nueva contraseña" required>
+							</div>
+
+							<div class="form-group">
+								<label for="confirmNewPassword">Confirmar Nueva
+									Contraseña</label> <input type="password" class="form-control"
+									id="confirmNewPassword" name="confirmNewPassword"
+									placeholder="Confirmar nueva contraseña" required>
+							</div>
+
+							<button type="submit" class="btn btn-primary btn-block mt-3">
+								<i class="fas fa-key"></i> Cambiar Contraseña
+							</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+	</section>
+</body>
+</html>

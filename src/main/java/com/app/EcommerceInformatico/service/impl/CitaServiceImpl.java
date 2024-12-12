@@ -52,8 +52,9 @@ public class CitaServiceImpl implements CitaService {
 	}
 
 	@Override
-	public List<Cita> obtenerCitasPorEmpleado(Long id) {
-		List<Cita> citas = citaRepository.findByEmpleadoId(id);
+	public List<Cita> obtenerCitasPorEmpleadoAndEstado(Long id, boolean b) {
+		List<Cita> citas = citaRepository.findByEmpleadoIdAndIsEnabled(id, b);
+	
 		return citas;
 	}
 
@@ -76,6 +77,12 @@ public class CitaServiceImpl implements CitaService {
 		cita.setLink(zoomLink);
 		citaRepository.save(cita);
 		
+	}
+
+	@Override
+	public List<Cita> getCitasByEstadoAndUserId(boolean b, Long id) {
+		List<Cita> citas = citaRepository.findByIsEnabledAndUserId(b, id);
+		return citas;
 	}
 
 }

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="~http://www.thymeleaf.org"
+	th:replace="~{empleado/base_empleado::Layout(~{::section})}">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<section class="container mt-3">
+		<div class="row">
+			<div class="col-12">
+				<h1 class="fs-3 text-center mb-4">Citas</h1>
+				<div class="d-flex justify-content-between align-items-center mb-3">
+					<!--<div class="search-bar w-50 d-flex align-items-center">
+							<label for="search" class="me-2">Buscar:</label>
+							<div class="input-group">
+								<span class="input-group-text bg-white border-end-0"> <i
+									class="bi bi-search"></i>
+								</span> <input id="search" class="form-control border-start-0"
+									placeholder="Buscar:" type="text" />
+							</div>
+						</div>-->
+					<!-- Mensajes de éxito o error -->
+					<th:block th:if="${session.succMsg}">
+						<div class="alert alert-success alert-dismissible fade show"
+							role="alert">
+							<strong>¡Éxito!</strong> [[${session.succMsg}]]
+							<button type="button" class="btn-close" data-bs-dismiss="alert"
+								aria-label="Close"></button>
+						</div>
+						<th:block th:text="${@commomServiceImpl.removeSessionMessage()}"></th:block>
+					</th:block>
+
+					<th:block th:if="${session.errorMsg}">
+						<div class="alert alert-danger alert-dismissible fade show"
+							role="alert">
+							<strong>¡Error!</strong> [[${session.errorMsg}]]
+							<button type="button" class="btn-close" data-bs-dismiss="alert"
+								aria-label="Close"></button>
+						</div>
+						<th:block th:text="${@commomServiceImpl.removeSessionMessage()}"></th:block>
+					</th:block>
+				</div>
+			</div>
+		</div>
+
+		<!-- Tabla responsiva -->
+		<div class="table-responsive">
+			<table class="table table-striped table-hover">
+				<thead class="table-light">
+					<tr>
+						<th scope="col">#</th>
+						<th scope="col">Nombre Completo</th>
+						<th scope="col">Email</th>
+						<th scope="col">Telefono</th>
+						<th scope="col">Fecha</th>
+						<th scope="col">Hora</th>
+						<th scope="col">Empleado</th>
+						<th scope="col">Servicio</th>
+						<th scope="col">Estado</th>
+						<th scope="col">Acciones</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="cita : ${citas}">
+						<td th:text="${cita.id}">1</td>
+						<td th:text="${cita.user.nombre}">Nombre Completo</td>
+						<td th:text="${cita.user.email}">Email</td>
+						<td th:text="${cita.user.celular}">Telefono</td>
+						<td th:text="${cita.fecha}">Fecha</td>
+
+						<td th:text="${cita.hora}">Hora</td>
+
+						<td th:text="${cita.empleado.nombre}">Empleado</td>
+						<td th:text="${cita.empleado.soporte.nombre}">Servicio</td>
+						<td th:text="${cita.estado}">Estado</td>
+
+						<td><th:block
+								th:if="${cita.estado == 'PENDIENTE' || cita.estado == 'PROCESO'}">
+								<div class="dropdown">
+									<th:block
+										th:if="${cita.estado == 'PROCESO' && cita.link == null}">
+
+
+										<button class="btn btn-secondary dropdown-toggle"
+											type="button" data-bs-toggle="dropdown" aria-expanded="false">
+											falta Link</button>
+									</th:block>
+
+									<th:block
+										th:unless="${cita.estado == 'PROCESO' && cita.link == null}">
+
+										<button class="btn btn-secondary dropdown-toggle"
+											type="button" data-bs-toggle="dropdown" aria-expanded="false">
+											estado</button>
+
+									</th:block>
+
+
+									<ul class="dropdown-menu">
+										<th:block th:if="${cita.estado == 'PENDIENTE'}">
+											<li><a class="dropdown-item"
+												th:href="@{'/empleado/cambiarEstado/' + ${cita.id} + '?estado=PROCESO'}">PROCESO</a>
+											</li>
+
+										</th:block>
+										<th:block
+											th:if="${cita.estado == 'PROCESO' && cita.link == null}">
+											<li>
+												<!-- Formulario para ingresar el enlace de Zoom cuando la cita está en "PROCESO" -->
+												<form action="/empleado/guardarZoomLink" method="post">
+													<div class="mb-3">
+														<input type="hidden" name="citaId" th:value="${cita.id}">
+														<label for="zoomLink" class="form-label">Enlace de
+															Zoom</label> <input type="url" class="form-control"
+															name="zoomLink" id="zoomLink"
+															placeholder="Ingrese el enlace de Zoom" required>
+													</div>
+													<button type="submit" class="btn btn-primary">Guardar
+														enlace</button>
+												</form>
+											</li>
+
+										</th:block>
+										<th:block
+											th:if="${cita.estado == 'PROCESO' && cita.link != null}">
+											<li><a class="dropdown-item"
+												th:href="@{'/empleado/cambiarEstado/' + ${cita.id} + '?estado=TERMINADO'}">TERMINADO</a>
+											</li>
+										</th:block>
+
+									</ul>
+								</div>
+							</th:block> <th:block th:if="${cita.estado == 'TERMINADO'}">
+								<span class="badge bg-success">TERMINADO</span>
+							</th:block></td>
+
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+
+	</section>
+</body>
+</html>
