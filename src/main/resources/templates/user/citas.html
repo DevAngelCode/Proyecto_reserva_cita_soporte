@@ -1,10 +1,86 @@
 <!DOCTYPE html>
-<html>
+<html lang="es" xmlns:th="~http://www.thymeleaf.org"
+	th:replace="~{user/base_user::Layout(~{::section})}">
+
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title></title>
 </head>
+
 <body>
+	<!-- Sección de detalles -->
+	<section class="container mt-5 mb-5">
+
+		<div class="row">
+			<!-- Cuadro principal -->
+			<div class="col-12">
+				<div class="card shadow-lg">
+					<div class="card-header bg-primary text-white">
+						<h1 class="mb-0">Historial de Citas</h1>
+					</div>
+					<div class="card-body">
+						<!-- Mensajes de éxito o error -->
+						<th:block th:if="${session.succMsg}">
+							<div class="alert alert-success alert-dismissible fade show"
+								role="alert">
+								<strong>¡Éxito!</strong> [[${session.succMsg}]]
+								<button type="button" class="btn-close" data-bs-dismiss="alert"
+									aria-label="Close"></button>
+							</div>
+							<th:block th:text="${@commomServiceImpl.removeSessionMessage()}"></th:block>
+						</th:block>
+
+						<th:block th:if="${session.errorMsg}">
+							<div class="alert alert-danger alert-dismissible fade show"
+								role="alert">
+								<strong>¡Error!</strong> [[${session.errorMsg}]]
+								<button type="button" class="btn-close" data-bs-dismiss="alert"
+									aria-label="Close"></button>
+							</div>
+							<th:block th:text="${@commomServiceImpl.removeSessionMessage()}"></th:block>
+						</th:block>
+
+						<!-- Tabla -->
+						<div class="table-responsive">
+							<table class="table table-striped table-hover">
+								<thead>
+									<tr>
+										<th scope="col">#</th>
+										<th scope="col">Fecha</th>
+										<th scope="col">Hora</th>
+										<th scope="col">Servicio</th>
+										<th scope="col">Empleado</th>
+										<th scope="col">Estado</th>
+										<th scope="col">Acción</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="cita, iterStat : ${citas}">
+										<th scope="row" th:text="${iterStat.count}">1</th>
+										<td th:text="${cita.fecha}">2021-10-20</td>
+										<td th:text="${cita.hora}">10:00</td>
+										<td th:text="${cita.empleado.soporte.nombre}">Cambio de
+											aceite</td>
+										<td th:text="${cita.empleado.nombre}">Juan Pérez</td>
+										<td th:text="${cita.estado}">Pendiente</td>
+										<td><a th:href="'/user/cita/detalle/'+${cita.id}"
+											class="btn btn-info">Detalle</a>
+											<div th:if="${cita.estado == 'PENDIENTE'}">
+												<a th:href="'/user/cita/eliminar/'+${cita.id}"
+													class="btn btn-danger"
+													onclick="return confirm('¿Estás seguro que quieres eliminar esta cita?');">
+													Eliminar </a>
+											</div></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
 
 </body>
+
 </html>

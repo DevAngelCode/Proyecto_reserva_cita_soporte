@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="~http://www.thymeleaf.org"
+	th:replace="~{user/base_user::Layout(~{::section})}">
+
+<head>
+<meta charset="UTF-8">
+<title></title>
+</head>
+
+<body>
+	<!-- Sección de detalles -->
+	<section class="container mt-5 mb-5">
+
+		<div class="row">
+			<!-- Cuadro principal -->
+			<div class="col-12">
+				<div class="card shadow-lg">
+					<div class="card-header bg-primary text-white">
+						<h1 class="mb-0">Detalle de Cita</h1>
+					</div>
+					<div class="card-body">
+						<!-- Mensajes de éxito o error -->
+						<th:block th:if="${session.succMsg}">
+							<div class="alert alert-success alert-dismissible fade show"
+								role="alert">
+								<strong>¡Éxito!</strong> [[${session.succMsg}]]
+								<button type="button" class="btn-close" data-bs-dismiss="alert"
+									aria-label="Close"></button>
+							</div>
+							<th:block th:text="${@commomServiceImpl.removeSessionMessage()}"></th:block>
+						</th:block>
+
+						<th:block th:if="${session.errorMsg}">
+							<div class="alert alert-danger alert-dismissible fade show"
+								role="alert">
+								<strong>¡Error!</strong> [[${session.errorMsg}]]
+								<button type="button" class="btn-close" data-bs-dismiss="alert"
+									aria-label="Close"></button>
+							</div>
+							<th:block th:text="${@commomServiceImpl.removeSessionMessage()}"></th:block>
+						</th:block>
+						<!-- Información de la Cita -->
+						<div class="mt-4">
+							<div class="detail-item">
+								<h5>
+									<i class="bi bi-person-circle"></i> <strong>Cliente:</strong>
+									[[${cita.user.nombre}]]
+								</h5>
+							</div>
+							<div class="detail-item">
+								<h5>
+									<i class="bi bi-person-fill"></i> <strong>Empleado:</strong>[[${cita.empleado.nombre}]]
+								</h5>
+							</div>
+							<div class="detail-item">
+								<h5>
+									<i class="bi bi-calendar-check"></i> <strong>Fecha:</strong>
+									[[${cita.fecha}]]
+								</h5>
+							</div>
+							<div class="detail-item">
+								<h5>
+									<i class="bi bi-clock"></i> <strong>Hora:</strong>
+									[[${cita.hora}]] hrs
+								</h5>
+							</div>
+							
+							
+							<div class="detail-item">
+								<h5>
+									<i class="bi bi-file-earmark-text"></i> <strong>Servicio:</strong>
+									[[${cita.empleado.soporte.nombre}]]
+								</h5>
+							</div>
+							<div class="detail-item">
+								<h5>
+									<i class="bi bi-cash"></i> <strong>Precio:</strong>
+									$ [[${cita.empleado.soporte.precio}]]
+								</h5>
+							</div>
+							<div class="detail-item">
+								<h5>
+									<i class="bi bi-check-circle"></i> <strong>Estado:</strong>
+									[[${cita.estado}]]
+								</h5>
+							</div>
+						</div>
+						<!-- Botones -->
+						<div class="d-grid gap-2 mt-4">
+							<th:block
+								th:if="${cita.estado == 'PENDIENTE' || cita.estado =='PROCESO'}">
+
+								<a th:href="@{/user/citas}" class="btn btn-secondary">Regresar</a>
+							</th:block>
+							<th:block th:if="${cita.estado == 'TERMINADO'}">
+								<a th:href="@{/user/citasPasadas}" class="btn btn-secondary">Regresar</a>
+							</th:block>
+							<div class="d-grid" th:if="${cita.estado == 'PENDIENTE'}">
+								<a th:href="@{/user/historial/eliminar/}+${cita.id}"
+									class="btn btn-danger"
+									onclick="return confirm('¿Estás seguro que quieres eliminar esta cita?');">Cancelar
+									Cita</a>
+							</div>
+						</div>
+
+
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+</body>
+
+</html>

@@ -3,12 +3,15 @@ package com.app.EcommerceInformatico.controller;
 import java.security.Principal;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -94,6 +97,21 @@ public class UserController {
 		return "redirect:/";
 	}
 
+	//citas
+	@GetMapping("/citas")
+	public String citas(Model model) {
+		List<Cita> citas = citaService.getCitasByEstado(true);
+		model.addAttribute("citas", citas);
+		
+		return "user/citas";
+	}
+	//detalleCita
+	@GetMapping("/cita/detalle/{id}")
+	public String detalleCita(@PathVariable Long id, Model model) {
+		Cita cita = citaService.getCitaById(id);
+		model.addAttribute("cita", cita);
+		return "user/detalle_cita";
+	}
       
 	
 

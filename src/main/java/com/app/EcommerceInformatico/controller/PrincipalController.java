@@ -72,6 +72,14 @@ public class PrincipalController {
 		model.addAttribute("productos", productoService.getAllActiveProducto());
 		return "home";
 	}
+	@GetMapping("/nosotros")
+	public String nosotros() {
+		return "sobreNosotros";
+	}
+	@GetMapping("/contacto")
+	public String contacto() {
+		return "contacto";
+	}
 
 	@GetMapping("/signin")
 	public String inicioSesion() {

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="~http://www.thymeleaf.org"
+	th:replace="~{user/base_user::Layout(~{::section})}">
+
+<head>
+<meta charset="UTF-8">
+<title>cambiar contraseña</title>
+</head>
+
+<body>
+	<section>
+		<div class="container py-5">
+
+			<!-- Sección de Contacto -->
+			<div class="section text-center mb-5">
+				<h2 style="color: #495057; font-weight: 600;">Contacto</h2>
+				<p
+					style="color: #6c757d; font-size: 1.2rem; max-width: 800px; margin: 0 auto;">
+					Si tienes alguna pregunta o necesitas asistencia técnica, no dudes
+					en ponerte en contacto con nosotros. Nuestro equipo está disponible
+					para brindarte soporte y ayudarte a encontrar la mejor solución a
+					tus necesidades tecnológicas.</p>
+			</div>
+
+			<!-- Formulario de Contacto -->
+			<div class="section form-container text-center"
+				style="background-color: #f8f9fa; padding: 40px; border-radius: 8px; margin-bottom: 50px;">
+				<h3 style="color: #495057; font-weight: 600; margin-bottom: 20px;">Envíanos
+					tu mensaje</h3>
+				<form action="/enviar-mensaje" method="post" class="mx-auto"
+					style="max-width: 600px;">
+					<div class="mb-3 text-left">
+						<label for="nombre" class="form-label" style="color: #495057;">Nombre
+							<i class="fas fa-user" style="color: #007bff;"></i>
+						</label> <input type="text" class="form-control" id="nombre" name="nombre"
+							required style="border-radius: 10px; border-color: #ced4da;">
+					</div>
+					<div class="mb-3 text-left">
+						<label for="email" class="form-label" style="color: #495057;">Correo
+							Electrónico <i class="fas fa-envelope" style="color: #007bff;"></i>
+						</label> <input type="email" class="form-control" id="email" name="email"
+							required style="border-radius: 10px; border-color: #ced4da;">
+					</div>
+					<div class="mb-3 text-left">
+						<label for="mensaje" class="form-label" style="color: #495057;">Mensaje
+							<i class="fas fa-comment-dots" style="color: #007bff;"></i>
+						</label>
+						<textarea class="form-control" id="mensaje" name="mensaje"
+							rows="4" required
+							style="border-radius: 10px; border-color: #ced4da;"></textarea>
+					</div>
+					<button type="submit" class="btn btn-primary"
+						style="background-color: #6fa3ef; border-color: #6fa3ef;">
+						Enviar <i class="fas fa-paper-plane"></i>
+					</button>
+				</form>
+			</div>
+
+			<!-- Información de Contacto -->
+			<div class="section contact-info text-center">
+				<h3 style="color: #495057; font-weight: 600; margin-bottom: 20px;">Información
+					de Contacto</h3>
+				<p style="color: #6c757d; font-size: 1.1rem;">
+					<strong>Teléfono:</strong> <i class="fas fa-phone-alt"
+						style="color: #007bff;"></i> +123 456 7890
+				</p>
+				<p style="color: #6c757d; font-size: 1.1rem;">
+					<strong>Email:</strong> <i class="fas fa-envelope"
+						style="color: #007bff;"></i> contacto@protecstore.com
+				</p>
+				<p style="color: #6c757d; font-size: 1.1rem;">
+					<strong>Horario de Atención:</strong> <i class="fas fa-clock"
+						style="color: #007bff;"></i> Lunes a Viernes: 9:00 AM - 6:00 PM
+				</p>
+			</div>
+
+		</div>
+	</section>
+
+</body>
+
+</html>

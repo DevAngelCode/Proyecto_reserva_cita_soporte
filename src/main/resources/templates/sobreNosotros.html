@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="~http://www.thymeleaf.org"
+	th:replace="~{user/base_user::Layout(~{::section})}">
+
+<head>
+<meta charset="UTF-8">
+<title>cambiar contraseña</title>
+</head>
+
+<body>
+	<section class="container py-5">
+
+		<!-- Hero Section -->
+		<div class="hero text-center mb-5"
+			style="background-color: #f8f9fa; padding: 60px 0; border-radius: 8px;">
+			<h1 class="display-4 font-weight-bold" style="color: #6c757d;">
+				Bienvenido a ProTec Store <i class="fas fa-laptop-code"
+					style="color: #007bff;"></i>
+			</h1>
+			<p class="lead" style="color: #adb5bd;">
+				Tu tienda online de tecnología, innovación y soporte técnico <i
+					class="fas fa-headset" style="color: #007bff;"></i>
+			</p>
+		</div>
+
+		<!-- ¿Quiénes somos? -->
+		<div class="mb-5">
+			<h2 class="text-center mb-4"
+				style="color: #495057; font-weight: 600;">
+				<i class="fas fa-users" style="color: #007bff;"></i> ¿Quiénes somos?
+			</h2>
+			<p class="lead text-justify">
+				En <strong>ProTec Store</strong>, somos una tienda online ubicada en
+				<strong>Ate Vitarte, Santa Clara</strong>, dedicada a ofrecer
+				productos tecnológicos de alta calidad y servicios de soporte
+				técnico especializado. Nos apasiona la tecnología y trabajamos para
+				ofrecerte la mejor experiencia de compra con un excelente servicio
+				al cliente.
+			</p>
+			<p class="text-justify">Desde nuestros inicios, nos hemos
+				comprometido a proporcionar un catálogo variado de dispositivos
+				electrónicos, accesorios y soluciones tecnológicas. Nuestra misión
+				es brindarte productos que mejoren tu vida diaria y se adapten a las
+				últimas tendencias del mercado.</p>
+		</div>
+
+		<!-- Misión, Visión y Valores en Cards -->
+		<div class="row mb-5">
+			<div class="col-md-4">
+				<div class="card shadow-sm"
+					style="border: none; border-radius: 10px; overflow: hidden;">
+					<div class="card-body text-center"
+						style="background-color: #e9ecef;">
+						<h5 class="card-title" style="color: #007bff; font-weight: 600;">
+							<i class="fas fa-bullseye" style="color: #007bff;"></i> Nuestra
+							Misión
+						</h5>
+						<p class="card-text" style="color: #6c757d;">Nuestra misión es
+							ofrecer productos tecnológicos de calidad a precios competitivos,
+							brindando soluciones innovadoras y un excelente servicio de
+							soporte técnico a todos nuestros clientes.</p>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="card shadow-sm"
+					style="border: none; border-radius: 10px; overflow: hidden;">
+					<div class="card-body text-center"
+						style="background-color: #e9ecef;">
+						<h5 class="card-title" style="color: #007bff; font-weight: 600;">
+							<i class="fas fa-eye" style="color: #007bff;"></i> Nuestra Visión
+						</h5>
+						<p class="card-text" style="color: #6c757d;">Aspiramos a ser
+							la tienda de tecnología líder en el Perú, destacándonos por
+							nuestra atención al cliente, la calidad de nuestros productos y
+							la innovación constante en todos nuestros servicios.</p>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="card shadow-sm"
+					style="border: none; border-radius: 10px; overflow: hidden;">
+					<div class="card-body text-center"
+						style="background-color: #e9ecef;">
+						<h5 class="card-title" style="color: #007bff; font-weight: 600;">
+							<i class="fas fa-handshake" style="color: #007bff;"></i> Nuestros
+							Valores
+						</h5>
+						<p class="card-text" style="color: #6c757d;">Compromiso,
+							honestidad, innovación, y excelencia. Estos son los valores que
+							nos guían en cada acción que realizamos. Trabajamos con
+							integridad para ofrecer siempre lo mejor a nuestros clientes.</p>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Historia y Evolución -->
+		<div class="mb-5">
+			<h2 class="text-center mb-4"
+				style="color: #495057; font-weight: 600;">
+				<i class="fas fa-history" style="color: #007bff;"></i> Nuestra
+				Historia
+			</h2>
+			<p class="lead text-justify">ProTec Store nació hace más de 5
+				años en Ate Vitarte, Santa Clara, como una pequeña tienda de
+				tecnología local. Con el paso de los años, fuimos creciendo y nos
+				convertimos en una tienda online, ampliando nuestra gama de
+				productos y servicios. Hoy en día, contamos con un equipo altamente
+				capacitado en soporte técnico y ventas, siempre dispuestos a ayudar
+				a nuestros clientes.</p>
+		</div>
+
+		<!-- Testimonios de Clientes -->
+		<div class="mb-5">
+			<h2 class="text-center mb-4"
+				style="color: #495057; font-weight: 600;">
+				<i class="fas fa-quote-left" style="color: #007bff;"></i>
+				Testimonios de Clientes
+			</h2>
+			<div class="row">
+				<div class="col-md-4 mb-3">
+					<div class="card shadow-sm"
+						style="border: 1px solid #f1f3f5; border-radius: 10px;">
+						<div class="card-body" style="background-color: #f1f3f5;">
+							<p class="card-text" style="color: #6c757d;">"Excelente
+								servicio. Compré una laptop en ProTec Store y el envío fue muy
+								rápido. Además, el equipo de soporte me ayudó a configurar todo.
+								¡Muy recomendado!"</p>
+							<footer class="blockquote-footer" style="color: #6c757d;">
+								Juan Pérez <cite title="Source Title">Cliente satisfecho</cite>
+							</footer>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4 mb-3">
+					<div class="card shadow-sm"
+						style="border: 1px solid #f1f3f5; border-radius: 10px;">
+						<div class="card-body" style="background-color: #f1f3f5;">
+							<p class="card-text" style="color: #6c757d;">"Estoy muy
+								contento con mi compra en ProTec Store. El equipo fue muy atento
+								y me ayudó a elegir el mejor producto para mis necesidades."</p>
+							<footer class="blockquote-footer" style="color: #6c757d;">
+								María López <cite title="Source Title">Cliente feliz</cite>
+							</footer>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4 mb-3">
+					<div class="card shadow-sm"
+						style="border: 1px solid #f1f3f5; border-radius: 10px;">
+						<div class="card-body" style="background-color: #f1f3f5;">
+							<p class="card-text" style="color: #6c757d;">"Tuve un pequeño
+								inconveniente con mi pedido, pero el servicio de soporte técnico
+								fue excepcional y resolvieron el problema rápidamente. ¡Gracias
+								ProTec Store!"</p>
+							<footer class="blockquote-footer" style="color: #6c757d;">
+								Carlos Gómez <cite title="Source Title">Cliente leal</cite>
+							</footer>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</section>
+
+
+</body>
+
+</html>
