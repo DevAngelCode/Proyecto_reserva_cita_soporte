@@ -9,13 +9,15 @@
 
 <body>
 	<!-- Sección de detalles -->
-	<section class="container mt-5">
+	<section class="container cuadroPrincipal">
 
+		<div class="mt-5  p-4 border rounded shadow-lg">
 		<h2 class="text-center mb-4">Selecciona una Hora para tu Cita</h2>
 
 		<div class="alert alert-info" role="alert">
-			Servicio Seleccionado: [[${empleadoSeleccionado.soporte.nombre}]] <br> Empleado:
-			[[${empleadoSeleccionado.nombre}]] <br> Fecha:
+			<strong>Servicio Seleccionado:</strong>
+			[[${empleadoSeleccionado.soporte.nombre}]] <br> <strong>Empleado:</strong>
+			[[${empleadoSeleccionado.nombre}]] <br> <strong>Fecha:</strong>
 			[[${fechaSeleccionada}]]
 		</div>
 
@@ -26,27 +28,24 @@
 
 			<div class="mt-4">
 				<h5>Horarios Disponibles:</h5>
-				<div class="d-flex flex-wrap">
-					<div th:each="hora, iterStat : ${horarios}">
+				<div class="row g-3">
+					<div th:each="hora, iterStat : ${horarios}"
+						class="col-md-3 col-sm-6">
 						<input type="submit" id="hora" th:id="'hora' + ${iterStat.index}"
 							name="hora" th:value="${hora}" class="d-none"> <label
-							th:for="'hora' + ${iterStat.index}" class="btn btn-success">[[${hora}]]</label>
+							th:for="'hora' + ${iterStat.index}"
+							class="btn btn-outline-success btn-lg w-100 text-center">
+							[[${hora}]] </label>
 					</div>
-
-					<!-- <th:block name="hora"  th:each="hora : ${horarios}" >
-                        <input type="submit" id="hora5" name="hora"  th:value="${hora}" class="d-none">
-                        <label for="hora5" class="hour-button">[[${hora}]]</label>
-                    </th:block>-->
 				</div>
 			</div>
+
+			<div class="mt-4 d-flex justify-content-between">
+				<a class="btn btn-secondary" href="/paso2">Regresar</a>
+				<button type="submit" class="btn btn-primary">Reservar Cita</button>
+			</div>
 		</form>
-		<a class="btn btn-primary" href="/paso2">Regresar</a>
-
-
-
-
-
-
+</div>
 	</section>
 
 </body>

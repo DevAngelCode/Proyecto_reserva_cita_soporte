@@ -8,72 +8,61 @@
 </head>
 
 <body>
-	<section>
-		<div class="container mt-5 ">
-			<h2 class="text-center mb-4">Detalle de tu cita</h2>
+	  <!-- Sección de detalles -->
+    <section class="container cuadroPrincipal">
+        <div class="mt-5 mb-5 p-4 border rounded shadow-lg">
+            <h2 class="text-center mb-4">Detalle de tu Cita</h2>
 
-			<th:block th:if="${session.succMsg}">
-				<p class="text-success fw-bold">[[${session.succMsg}]]</p>
-				<th:block th:text="${@commomServiceImpl.removeSessionMessage()}"></th:block>
-			</th:block>
-			<th:block th:if="${session.errorMsg}">
-				<p class="text-danger fw-bold">[[${session.errorMsg}]]</p>
-				<th:block th:text="${@commomServiceImpl.removeSessionMessage()}"></th:block>
+            <!-- Mensajes de éxito y error -->
+            <th:block th:if="${session.succMsg}">
+                <p class="text-success fw-bold text-center">[[${session.succMsg}]]</p>
+                <th:block th:text="${@commomServiceImpl.removeSessionMessage()}"></th:block>
+            </th:block>
+            <th:block th:if="${session.errorMsg}">
+                <p class="text-danger fw-bold text-center">[[${session.errorMsg}]]</p>
+                <th:block th:text="${@commomServiceImpl.removeSessionMessage()}"></th:block>
+            </th:block>
 
-			</th:block>
+            <!-- Formulario de detalle de la cita -->
+            <form action="/user/enviarCita" method="post">
+                <div class="quote-detail mb-4">
+                    <h5><strong>Detalles de tu Cita:</strong></h5>
+                    <input type="hidden" name="empleadoId" th:value="${empleado.id}">
+                    <input type="hidden" name="usuarioId" th:value="${user.id}">
+                    <input type="hidden" name="fecha" th:value="${fecha}">
+                    <input type="hidden" name="hora" th:value="${hora}">
 
-			<form action="/user/enviarCita" method="post">
-				<!-- Cita Detalle -->
-				<div class="quote-detail">
-					<h5>
-						<strong>Detalles de tu Cita:</strong>
-					</h5>
-					<input type="hidden" name="empleadoId" th:value="${empleado.id}">
-					<input type="hidden" name="usuarioId" th:value="${user.id}">
-					<input type="hidden" name="fecha" th:value="${fecha}"> <input
-						type="hidden" name="hora" th:value="${hora}">
-					<p>
-						<strong>Cliente:</strong> [[${user.nombre}]]
-					</p>
-					<p>
-						<strong>Servicio:</strong> [[${empleado.soporte.nombre}]]
-					</p>
+                    <p><strong>Cliente:</strong> [[${user.nombre}]]</p>
+                    <p><strong>Servicio:</strong> [[${empleado.soporte.nombre}]]</p>
+                    <p><strong>Empleado:</strong> [[${empleado.nombre}]]</p>
+                    <p><strong>Fecha:</strong> [[${fecha}]]</p>
+                    <p><strong>Horario:</strong> [[${hora}]]</p>
+                </div>
 
+                <!-- Botón para confirmar la cita -->
+                <div class="d-grid gap-2 mt-4">
+                    <button class="btn btn-primary" type="submit">Confirmar Cita</button>
+                </div>
+            </form>
 
-					<p>
-						<strong>Empleado:</strong> [[${empleado.nombre}]]
-					</p>
-					<p>
-						<strong>Fecha:</strong> [[${fecha}]]
-					</p>
-					<p>
-						<strong>Horario:</strong> [[${hora}]]
-					</p>
-					<!-- Agregar el valor de la hora seleccionada aquí -->
-				</div>
+            <!-- Botón de regresar -->
+            <div class="d-flex justify-content-start mt-4">
+                <a href="/paso3" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Regresar
+                </a>
+            </div>
 
-				<!-- Botón para confirmar la cita -->
-				<div class="d-grid gap-2 mt-4">
-					<button class="btn btn-primary" type="submit">Confirmar
-						Cita</button>
-				</div>
-			</form>
-
-			<a class="btn btn-primary" href="/paso3">Regresar</a>
-
-
-
-			<th:block th:if="${session.succMsg}">
-				<p class="text-success fw-bold">[[${session.succMsg}]]</p>
-				<th:block th:text="${@commomServiceImpl.removeSessionMessage()}"></th:block>
-			</th:block>
-			<th:block th:if="${session.errorMsg}">
-				<p class="text-danger fw-bold">[[${session.errorMsg}]]</p>
-				<th:block th:text="${@commomServiceImpl.removeSessionMessage()}"></th:block>
-
-			</th:block>
-		</div>
-	</section>
+            <!-- Mensajes de éxito y error al final -->
+            <th:block th:if="${session.succMsg}">
+                <p class="text-success fw-bold text-center">[[${session.succMsg}]]</p>
+                <th:block th:text="${@commomServiceImpl.removeSessionMessage()}"></th:block>
+            </th:block>
+            <th:block th:if="${session.errorMsg}">
+                <p class="text-danger fw-bold text-center">[[${session.errorMsg}]]</p>
+                <th:block th:text="${@commomServiceImpl.removeSessionMessage()}"></th:block>
+            </th:block>
+        </div>
+    </section>
 
 </body>
 

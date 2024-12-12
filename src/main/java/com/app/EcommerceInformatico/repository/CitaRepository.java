@@ -14,6 +14,8 @@ public interface CitaRepository extends JpaRepository<Cita, Long> {
 	public List<Cita> findByIsEnabled(Boolean estado);
 
 	public List<Cita> findByEmpleadoIdAndFecha(Long id, LocalDate fechaSeleccionada);
+
+	public List<Cita> findByEmpleadoId(Long id);
 	
 
 }

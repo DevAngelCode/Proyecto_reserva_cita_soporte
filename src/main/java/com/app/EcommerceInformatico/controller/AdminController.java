@@ -66,10 +66,8 @@ public class AdminController {
 			model.addAttribute("user", userDtls);
 			userDtls.setIntentosFallidos(0);
 
-			
-
 		}
-		
+
 	}
 
 	@GetMapping("/")
@@ -331,72 +329,67 @@ public class AdminController {
 	}
 
 	@PostMapping("/saveEmpleado")
-	public String saveEmpleado(@RequestParam String nombre, 
-	                           @RequestParam String celular, 
-	                           @RequestParam String email, 
-	                           @RequestParam String password, 
-	                           @RequestParam String direccion, 
-	                           @RequestParam String ciudad, 
-	                           @RequestParam Long soporteId, 
-	                           MultipartFile file, 
-	                           HttpSession session) throws IOException {
+	public String saveEmpleado(@RequestParam String nombre, @RequestParam String celular, @RequestParam String email,
+			@RequestParam String password, @RequestParam String direccion, @RequestParam String ciudad,
+			@RequestParam Long soporteId, MultipartFile file, HttpSession session) throws IOException {
 
-	    // Verifica si el email ya existe, si es así, evitar la creación de un nuevo usuario con el mismo email
-	    if (userService.getUserByEmail(email) != null) {
-	        session.setAttribute("errorMsg", "El correo electrónico ya está registrado.");
-	        return "redirect:/admin/empleados";
-	    }
+		// Verifica si el email ya existe, si es así, evitar la creación de un nuevo
+		// usuario con el mismo email
+		if (userService.getUserByEmail(email) != null) {
+			session.setAttribute("errorMsg", "El correo electrónico ya está registrado.");
+			return "redirect:/admin/empleados";
+		}
 
-	    // Crea un nuevo usuario
-	    User nuevoEmpleado = new User();
-	    nuevoEmpleado.setNombre(nombre);
-	    nuevoEmpleado.setCelular(celular);
-	    nuevoEmpleado.setEmail(email);
+		// Crea un nuevo usuario
+		User nuevoEmpleado = new User();
+		nuevoEmpleado.setNombre(nombre);
+		nuevoEmpleado.setCelular(celular);
+		nuevoEmpleado.setEmail(email);
 
-	    // Codificar la contraseña
-	    String encode = passwordEncoder.encode(password);
-	    nuevoEmpleado.setPassword(encode);
+		// Codificar la contraseña
+		String encode = passwordEncoder.encode(password);
+		nuevoEmpleado.setPassword(encode);
 
-	    nuevoEmpleado.setDireccion(direccion);
-	    nuevoEmpleado.setCiudad(ciudad);
+		nuevoEmpleado.setDireccion(direccion);
+		nuevoEmpleado.setCiudad(ciudad);
 
-	    // Establecer el soporte relacionado
-	    Soporte soporte = soporteService.getSoporteById(soporteId);
-	    nuevoEmpleado.setSoporte(soporte);
+		// Establecer el soporte relacionado
+		Soporte soporte = soporteService.getSoporteById(soporteId);
+		nuevoEmpleado.setSoporte(soporte);
 
-	    // Establecer el rol como ROLE_EMPLOYEE
-	    nuevoEmpleado.setRol("ROLE_EMPLOYEE");
+		// Establecer el rol como ROLE_EMPLOYEE
+		nuevoEmpleado.setRol("ROLE_EMPLOYEE");
 
-	    // Establecer el estado (activo) y otros campos iniciales
-	    nuevoEmpleado.setIsEnable(true);
-	    nuevoEmpleado.setCuentaNoBloqueada(true);
-	    nuevoEmpleado.setIntentosFallidos(0);
+		// Establecer el estado (activo) y otros campos iniciales
+		nuevoEmpleado.setIsEnable(true);
+		nuevoEmpleado.setCuentaNoBloqueada(true);
+		nuevoEmpleado.setIntentosFallidos(0);
 
-	    // Asignar una imagen por defecto si no se carga una nueva
-	    String imageName = file != null && !file.isEmpty() ? file.getOriginalFilename() : "default.jpg";
-	    nuevoEmpleado.setImagenPerfil(imageName);
+		// Asignar una imagen por defecto si no se carga una nueva
+		String imageName = file != null && !file.isEmpty() ? file.getOriginalFilename() : "default.jpg";
+		nuevoEmpleado.setImagenPerfil(imageName);
 
-	    // Guardar el nuevo empleado en la base de datos
-	    User savedEmpleado = userService.updateUser(nuevoEmpleado);  // Método para crear el usuario
+		// Guardar el nuevo empleado en la base de datos
+		User savedEmpleado = userService.updateUser(nuevoEmpleado); // Método para crear el usuario
 
-	    if (savedEmpleado == null) {
-	        session.setAttribute("errorMsg", "Error al guardar el nuevo empleado.");
-	    } else {
-	        // Si se cargó una imagen, guardarla en el servidor
-	        if (file != null && !file.isEmpty()) {
-	            File saveFile = new ClassPathResource("static/img").getFile();
-	            Path path = Paths.get(saveFile.getAbsolutePath() + File.separator + "usuario_img" + File.separator
-	                    + file.getOriginalFilename());
-	            Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
-	        }
+		if (savedEmpleado == null) {
+			session.setAttribute("errorMsg", "Error al guardar el nuevo empleado.");
+		} else {
+			// Si se cargó una imagen, guardarla en el servidor
+			if (file != null && !file.isEmpty()) {
+				File saveFile = new ClassPathResource("static/img").getFile();
+				Path path = Paths.get(saveFile.getAbsolutePath() + File.separator + "usuario_img" + File.separator
+						+ file.getOriginalFilename());
+				Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+			}
 
-	        session.setAttribute("succMsg", "Empleado creado con éxito.");
-	    }
+			session.setAttribute("succMsg", "Empleado creado con éxito.");
+		}
 
-	    return "redirect:/admin/empleados";  // Redirige a la lista de empleados
+		return "redirect:/admin/empleados"; // Redirige a la lista de empleados
 	}
-	
-	//cambiar estado de empleado
+
+	// cambiar estado de empleado
 	@GetMapping("/cambiarEstadoEmpleado/{id}")
 	public String cambiarEstadoEmpleado(@PathVariable Long id, HttpSession session) {
 		User empleado = userService.getUserById(id);
@@ -409,7 +402,8 @@ public class AdminController {
 		session.setAttribute("succMsg", "Estado actualizado con éxito");
 		return "redirect:/admin/empleados";
 	}
-	//eliminar empleado
+
+	// eliminar empleado
 	@GetMapping("/eliminarEmpleado/{id}")
 	public String eliminarEmpleado(@PathVariable Long id, HttpSession session) {
 		try {
@@ -420,17 +414,89 @@ public class AdminController {
 		}
 		return "redirect:/admin/empleados";
 	}
-	
-	
-	//servicio
+
+	// servicio
 	@GetMapping("/servicios")
 	public String servicios(Model model) {
 		List<Soporte> soportes = soporteService.getAllSoporte();
 		model.addAttribute("soportes", soportes);
 		return "admin/servicios";
 	}
-	
-	
-	
+
+	@GetMapping("/editarServicio/{id}")
+	public String editarServicio(@PathVariable Long id, Model model) {
+		Soporte soporte = soporteService.getSoporteById(id);
+		model.addAttribute("soporte", soporte);
+		return "admin/editar_servicio";
+	}
+
+	@PostMapping("/updateServicio")
+	public String updateServicio(@ModelAttribute Soporte soporte, HttpSession session) {
+
+		Soporte updatedSoporte = soporteService.saveSoporte(soporte);
+		if (updatedSoporte != null) {
+			session.setAttribute("succMsg", "Actualizado con éxito");
+		} else {
+			session.setAttribute("errorMsg", "no actualizado! error interno del servidor");
+		}
+
+		return "redirect:/admin/editarServicio/" + soporte.getId();
+	}
+
+	// editar perfil
+	@GetMapping("/editarPerfil")
+	public String editarPerfil() {
+
+		return "admin/editarPerfil";
+	}
+
+	@PostMapping("/update_perfil")
+	public String updatePerfil(@ModelAttribute User user, MultipartFile file, HttpSession session) throws IOException {
+		User userDtls = userService.getUserById(user.getId());
+		String imageName = file.isEmpty() ? userDtls.getImagenPerfil() : file.getOriginalFilename();
+		user.setImagenPerfil(imageName);
+		User updatedUser = userService.updateUser(user);
+		if (updatedUser != null) {
+
+			if (!file.isEmpty()) {
+				File saveFile = new ClassPathResource("static/img").getFile();
+				Path path = Paths.get(saveFile.getAbsolutePath() + File.separator + "usuario_img" + File.separator
+						+ file.getOriginalFilename());
+				Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+			}
+
+			session.setAttribute("succMsg", "Perfil actualizado correctamente");
+		} else {
+			session.setAttribute("errorMsg", "Error al actualizar el perfil");
+		}
+
+		return "redirect:/admin/editarPerfil";
+	}
+
+	// cambiarContrasena
+	@PostMapping("/cambiarContrasena")
+	public String cambiarContrasena(@RequestParam Long userId, @RequestParam String password,
+			@RequestParam String newPassword, @RequestParam String confirmNewPassword, HttpSession session) {
+
+		User userU = userService.getUserById(userId);
+		if (!passwordEncoder.matches(password, userU.getPassword())) {
+			session.setAttribute("errorMsg", "La contraseña actual no coincide");
+			return "redirect:/admin/editarPerfil";
+		}
+		if (!newPassword.equals(confirmNewPassword)) {
+			session.setAttribute("errorMsg", "La nueva contraseña y la confirmación de la contraseña no coinciden");
+			return "redirect:/admin/editarPerfil";
+		}
+		userU.setPassword(passwordEncoder.encode(newPassword));
+		User updatedUser = userService.updateUser(userU);
+		if (updatedUser != null) {
+			session.setAttribute("succMsg", "Contraseña actualizada correctamente");
+		} else {
+			session.setAttribute("errorMsg", "Error al actualizar la contraseña");
+		}
+
+		return "redirect:/admin/editarPerfil";
+
+	}
 
 }

@@ -42,7 +42,7 @@ public class CitaServiceImpl implements CitaService {
 	@Override
 	public void deleteCita(Long id) {
 		citaRepository.deleteById(id);
-		
+
 	}
 
 	@Override
@@ -51,5 +51,31 @@ public class CitaServiceImpl implements CitaService {
 		return citas;
 	}
 
-	
+	@Override
+	public List<Cita> obtenerCitasPorEmpleado(Long id) {
+		List<Cita> citas = citaRepository.findByEmpleadoId(id);
+		return citas;
+	}
+
+	@Override
+	public void cambiarEstado(Long id, String estado) {
+		Cita cita = citaRepository.findById(id).get();
+		if (estado.equals("TERMINADO")) {
+			cita.setIsEnabled(false);
+			cita.setEstado(estado);
+		} else {
+			cita.setEstado(estado);
+		}
+		citaRepository.save(cita);
+
+	}
+
+	@Override
+	public void guardarZoomLink(Long citaId, String zoomLink) {
+		Cita cita = citaRepository.findById(citaId).get();
+		cita.setLink(zoomLink);
+		citaRepository.save(cita);
+		
+	}
+
 }

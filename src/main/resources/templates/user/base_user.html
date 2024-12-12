@@ -19,7 +19,13 @@
 	crossorigin="anonymous" referrerpolicy="no-referrer" />
 <link rel="stylesheet" href="/css/styleUser.css">
 
+
 <style>
+.nav-link:hover {
+	color: #00BFFF; /* Cambia el color del texto al pasar el mouse */
+	text-decoration: underline; /* Opcional: subrayado al hacer hover */
+}
+
 @media ( max-width : 1024px) {
 	.carddd {
 		flex: 0 0 25%;
@@ -65,6 +71,13 @@
 	bottom: 30%;
 	z-index: 10;
 }
+
+.profile-pic {
+	width: 120px;
+	height: 120px;
+	border-radius: 50%;
+	object-fit: cover;
+}
 </style>
 </head>
 
@@ -89,18 +102,29 @@
 					<ul class="navbar-nav ms-auto d-flex align-items-center">
 
 						<li class="nav-item"><a class="nav-link text-white"
-							th:href="@{/user/citas}"><i class="bi bi-heart"></i> Mis
-								Citas</a></li>
-						<li class="nav-item"><a class="nav-link
+							href="/nosotros"> <i class="bi bi-info-circle"></i> Sobre
+								Nosotros
+						</a></li>
+						<li class="nav-item"><a class="nav-link text-white"
+							href="/contacto"> <i class="bi bi-telephone"></i> Contacto
+						</a></li>
+
+
+						<th:block th:if="${user!=null}">
+
+							<li class="nav-item"><a class="nav-link text-white"
+								th:href="@{/user/citas}"><i class="bi bi-heart"></i> Mis
+									Citas</a></li>
+							<li class="nav-item"><a class="nav-link
 						text-white"
-							th:href="@{/user/citasPasadas}"><i class="bi bi-heart"></i>
-								Citas pasadas</a></li>
-						<li class="nav-item"><a class="nav-link" href="/soporte">
-								<i class="bi bi-headset text-white"></i>
+								th:href="@{/user/citasPasadas}"><i class="bi bi-heart"></i>
+									Citas pasadas</a></li>
+						</th:block>
+						<li class="nav-item"><a class="nav-link text-white"
+							href="/soporte"> <i class="bi bi-headset text-white"></i>
+								Servicios
 						</a></li>
-						<li class="nav-item"><a class="nav-link" href="favorito.html">
-								<i class="bi bi-heart-fill text-white"></i>
-						</a></li>
+						
 						<li class="nav-item"><a class="nav-link" href="carro.html">
 								<i class="bi bi-cart-fill text-white"></i>
 						</a></li>
@@ -111,6 +135,11 @@
 							</a></li>
 						</th:block>
 						<th:block th:if="${user!=null}">
+							<li class="nav-item"><a class="nav-link text-white"
+								th:href="@{/user/editarPerfil}"> <i
+									class="bi bi-person-fill text-white"></i> <span>[[${user.nombre}]]</span>
+
+							</a></li>
 							<li class="nav-item"><a class="nav-link" href="/logout">
 									<i class="bi bi-box-arrow-right text-white"></i>
 
@@ -122,22 +151,6 @@
 		</nav>
 	</header>
 
-	<th:block th:if="${session.succMsg}">
-		<div class="toast-container position-fixed bottom-0 end-0 p-3">
-			<div id="miToast" class="toast bg-primary text-white" role="alert"
-				aria-live="assertive" aria-atomic="true">
-				<div class="toast-header bg-primary text-white">
-					<i class="fa-solid fa-bell me-2"></i> <strong class="me-auto">Notificación</strong>
-					<small class="text-light">Ahora</small>
-					<button type="button" class="btn-close btn-close-white"
-						data-bs-dismiss="toast" aria-label="Close"></button>
-				</div>
-				<div class="toast-body">[[${session.succMsg}]]</div>
-				<th:block th:text="${@commomServiceImpl.removeSessionMessage()}"></th:block>
-			</div>
-		</div>
-
-	</th:block>
 	<!--contenido-->
 	<div th:replace="${content}"></div>
 

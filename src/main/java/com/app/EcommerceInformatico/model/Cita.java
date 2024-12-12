@@ -31,6 +31,7 @@ public class Cita {
 	private User user;
 	private LocalDate fecha;
 	private LocalTime hora;
+	private String link;
 	private String estado;
 	private Boolean isEnabled;
 

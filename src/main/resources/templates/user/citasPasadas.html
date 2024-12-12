@@ -16,7 +16,7 @@
 			<div class="col-12">
 				<div class="card shadow-lg">
 					<div class="card-header bg-primary text-white">
-						<h1 class="mb-0">Historial de Citas</h1>
+						<h1 class="mb-0">Citas Pasadas</h1>
 					</div>
 					<div class="card-body">
 						<!-- Mensajes de éxito o error -->
@@ -54,8 +54,13 @@
 										<th scope="col">Acción</th>
 									</tr>
 								</thead>
+
 								<tbody>
+
+
 									<tr th:each="cita, iterStat : ${citas}">
+
+
 										<th scope="row" th:text="${iterStat.count}">1</th>
 										<td th:text="${cita.fecha}">2021-10-20</td>
 										<td th:text="${cita.hora}">10:00</td>
@@ -64,16 +69,14 @@
 										<td th:text="${cita.empleado.nombre}">Juan Pérez</td>
 										<td th:text="${cita.estado}">Pendiente</td>
 										<td><a th:href="'/user/cita/detalle/'+${cita.id}"
-											class="btn btn-info">Detalle</a>
-											<div th:if="${cita.estado == 'PENDIENTE'}">
-												<a th:href="'/user/cita/eliminar/'+${cita.id}"
-													class="btn btn-danger"
-													onclick="return confirm('¿Estás seguro que quieres eliminar esta cita?');">
-													Eliminar </a>
-											</div></td>
+											class="btn btn-info">Detalle</a></td>
 									</tr>
 								</tbody>
+
+
 							</table>
+							<th:block th:if="${citas.size <= 0}" class="alert alert-warning"
+								role="alert">No tienes citas pasadas</th:block>
 						</div>
 					</div>
 				</div>

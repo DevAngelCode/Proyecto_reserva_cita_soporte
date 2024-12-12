@@ -13,6 +13,9 @@ public interface CitaService {
 	public List<Cita> getCitasByEstado(Boolean isEnabled);
 	public void deleteCita(Long id);
 	public List<Cita> obtenerCitasPorEmpleadoYFecha(Long id, LocalDate fechaSeleccionada);
+	public List<Cita> obtenerCitasPorEmpleado(Long id);
+	public void cambiarEstado(Long id, String estado);
+	public void guardarZoomLink(Long citaId, String zoomLink);
 	
 	
 

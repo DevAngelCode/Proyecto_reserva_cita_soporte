@@ -9,11 +9,11 @@
 
 <body>
 	<!-- Sección de detalles -->
-	<section class="container mt-5">
+	<section class="container mt-5 mb-5">
 		<h1 class="text-center mb-4">[[${soporte.nombre}]]</h1>
 		<div class="row">
 			<div class="col-md-6">
-				<img src="https://via.placeholder.com/600x400" class="img-fluid"
+				<img src="/img/soporte/1.webp" class="img-fluid"
 					alt="Asistencia por Video Llamada">
 			</div>
 			<div class="col-md-6">
@@ -48,6 +48,10 @@
 					<input type="hidden" name="soporteId" th:value="${soporte.id}" />
 					<button type="submit" class="btn btn-primary">Agendar Cita</button>
 				</form>
+				<div class="mt-3">
+
+					<a href="/soporte" class="btn btn-secondary">Volver</a>
+				</div>
 			</div>
 		</div>
 	</section>

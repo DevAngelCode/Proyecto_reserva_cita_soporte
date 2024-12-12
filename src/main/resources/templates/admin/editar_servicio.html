@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="~http://www.thymeleaf.org"
+	th:replace="~{admin/base_admin::Layout(~{::section})}">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<section>
+
+		<div class="container mt-5">
+			<h1>Editar servicio</h1>
+			<th:block th:if="${session.succMsg}">
+				<p class="text-success fw-bold">[[${session.succMsg}]]</p>
+				<th:block th:text="${@commomServiceImpl.removeSessionMessage()}"></th:block>
+			</th:block>
+			<th:block th:if="${session.errorMsg}">
+				<p class="text-danger fw-bold">[[${session.errorMsg}]]</p>
+				<th:block th:text="${@commomServiceImpl.removeSessionMessage()}"></th:block>
+
+			</th:block>
+			<form action="/admin/updateServicio" method="post"
+				enctype="multipart/form-data">
+				<!-- ID (hidden) -->
+				<input type="hidden" id="categoryId" name="id"
+					th:value="${soporte.id}">
+				<!-- Nombre -->
+				<div class="mb-3">
+					<label for="productName" class="form-label">Nombre del
+						Servicio</label> <input type="text" class="form-control" id="productName"
+						name="nombre" th:value="${soporte.nombre}"
+						placeholder="Nombre del Producto" required>
+				</div>
+
+
+
+
+				<!-- Precio -->
+				<div class="mb-3">
+					<label for="productPrice" class="form-label">Precio</label> <input
+						type="number" class="form-control" id="productPrice" name="precio"
+						th:value="${soporte.precio}" placeholder="Precio del Servicio"
+						required>
+				</div>
+
+
+				
+				<div class="mb-3">
+					<label for="productStatus" class="form-label">Estado</label> <select
+						class="form-select" id="productStatus" name="estado">
+						<option value="true" th:selected="${soporte.estado==true}">Activo</option>
+						<option value="false" th:selected="${soporte.estado==false}">Inactivo</option>
+					</select>
+				</div>
+				
+
+				<button type="submit" class="btn btn-primary">Actualizar</button>
+				<a href="/admin/servicios" class="btn btn-secondary">Volver</a>
+			</form>
+		</div>
+	</section>
+</body>
+</html>

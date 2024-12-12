@@ -9,73 +9,102 @@
 
 <body>
 	<!-- Sección de detalles -->
-	<section class="container mt-5">
+	<section class="container mt-5 mb-5 p-4 border rounded shadow-lg">
 
-		<h2 class="text-center mb-4">Selecciona una fecha para Generar tu
+		<h2 class="text-center mb-4">Selecciona una Fecha para Generar tu
 			Cita</h2>
 
-
+		<!-- Mensajes de éxito y error -->
 		<th:block th:if="${session.succMsg}">
-			<p class="text-success fw-bold">[[${session.succMsg}]]</p>
+			<p class="text-success fw-bold text-center">[[${session.succMsg}]]</p>
 			<th:block th:text="${@commomServiceImpl.removeSessionMessage()}"></th:block>
 		</th:block>
 		<th:block th:if="${session.errorMsg}">
-			<p class="text-danger fw-bold">[[${session.errorMsg}]]</p>
+			<p class="text-danger fw-bold text-center">[[${session.errorMsg}]]</p>
 			<th:block th:text="${@commomServiceImpl.removeSessionMessage()}"></th:block>
-
 		</th:block>
 
-		<div class="alert alert-info" role="alert">Servicio
-			Seleccionado: [[${soporte.nombre}]]</div>
+		<!-- Alerta de servicio seleccionado -->
+		<div class="alert alert-info" role="alert">
+			<strong>Servicio Seleccionado:</strong> [[${soporte.nombre}]]
+		</div>
 
-		<!-- Formulario para empleado 1 -->
-		<div class="row card" th:each="empleado : ${empleados}">
+		<!-- Formulario para seleccionar empleado y fecha -->
+		<div th:each="empleado : ${empleados}" class="card mb-4">
+			<div class="card-body">
+				<form action="/paso2" method="POST">
+					<input type="hidden" name="empleadoId" th:value="${empleado.id}">
 
-			<form action="/paso2" method="POST">
-				 <input type="hidden"
-					name="empleadoId" th:value="${empleado.id}">
+					<div class="mb-3">
+						<label for="fecha" class="form-label">Selecciona una
+							fecha:</label> <input type="date" name="fecha" id="fecha"
+							th:value="${fechaSeleccionada}"
+							th:min="${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}"
+							class="form-control" required>
+					</div>
 
-				<!-- Selección de fecha -->
-				<label for="fecha">Selecciona una fecha:</label> <input type="date"
-					name="fecha" id="fecha" th:value="${fechaSeleccionada}"
-					th:min="${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}"
-					required> <br>
-
-
-				<!-- Botón para cargar horarios disponibles -->
-				<button type="submit">Ver horarios disponibles</button>
-			</form>
-
-
-			<div class="col-md-2 text-center">
-				<!--<img th:src="'/img/img_empleado/'+${empleado.imagen}" alt="Empleado"
-					class="img-fluid rounded-circle">-->
+					<button type="submit" class="btn btn-primary">Ver Horarios
+						Disponibles</button>
+				</form>
 			</div>
-			<div class="col-md-10">
-				<div class="">
+
+			<!-- Información del empleado -->
+			<div class="row">
+				<div class="col-md-2 text-center">
+					<!-- Imagen del empleado (comentada en tu código) -->
+					<!--<img th:src="'/img/img_empleado/'+${empleado.imagen}" alt="Empleado" class="img-fluid rounded-circle">-->
+				</div>
+				<div class="col-md-10">
 					<div class="card-body">
-						<p class="card-title
-							">Nombre: [[${empleado.nombre}]]</p>
-						<p class="card-text">Direccion: [[${empleado.direccion}]]</p>
-
-						<p class="card-text">Ciudad: [[${empleado.ciudad}]]</p>
-						<p class="card-text">Especialidad: [[${empleado.soporte.nombre}]]</p>
-
+						<p class="card-title">
+							<strong>Nombre:</strong> [[${empleado.nombre}]]
+						</p>
+						<p class="card-text">
+							<strong>Dirección:</strong> [[${empleado.direccion}]]
+						</p>
+						<p class="card-text">
+							<strong>Ciudad:</strong> [[${empleado.ciudad}]]
+						</p>
+						<p class="card-text">
+							<strong>Especialidad:</strong> [[${empleado.soporte.nombre}]]
+						</p>
 					</div>
 				</div>
-
 			</div>
-
-
-
 		</div>
-		<br>
-		<th:block th:unless="
-							${empleados.size>
-							0}">
+
+		<!-- Mensaje cuando no hay empleados disponibles -->
+		<th:block th:unless="${empleados.size > 0}">
 			<div class="alert alert-warning text-center" role="alert">
 				<i class="fas fa-exclamation-circle"></i> No hay empleados
 				disponibles para el servicio
+			</div>
+		</th:block>
+		<!-- Botón de regresar -->
+		<th:block th:if="${soporte.nombre == 'Asistencia por Video Llamada'}">
+			<div class="d-flex justify-content-start mt-4">
+				<a href="/soporte/1" class="btn btn-secondary"> <i
+					class="fas fa-arrow-left"></i> Regresar
+				</a>
+			</div>
+		</th:block>
+		<th:block th:if="${soporte.nombre == 'Diagnóstico Remoto'}">
+			<div class="d-flex justify-content-start mt-4">
+				<a href="/soporte/3" class="btn btn-secondary"> <i
+					class="fas fa-arrow-left"></i> Regresar
+				</a>
+			</div>
+		</th:block>
+
+
+		<th:block th:if="${soporte.nombre == 'Consultoría Técnica'}">
+
+
+
+			<div class="d-flex justify-content-start mt-4">
+				<a href="/soporte/2" class="btn btn-secondary"> <i
+					class="fas fa-arrow-left"></i> Regresar
+				</a>
 			</div>
 		</th:block>
 	</section>

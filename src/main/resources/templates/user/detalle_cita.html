@@ -64,8 +64,8 @@
 									[[${cita.hora}]] hrs
 								</h5>
 							</div>
-							
-							
+
+
 							<div class="detail-item">
 								<h5>
 									<i class="bi bi-file-earmark-text"></i> <strong>Servicio:</strong>
@@ -74,10 +74,18 @@
 							</div>
 							<div class="detail-item">
 								<h5>
-									<i class="bi bi-cash"></i> <strong>Precio:</strong>
-									$ [[${cita.empleado.soporte.precio}]]
+									<i class="bi bi-cash"></i> <strong>Precio:</strong> $
+									[[${cita.empleado.soporte.precio}]]
 								</h5>
 							</div>
+							<th:block th:if="${cita.estado == 'PROCESO'}">
+								<div class="detail-item">
+									<h5>
+										<i class="bi bi-zoom"></i> <strong>Link de Zoom:</strong> <a
+											th:href="${cita.link}" target="_blank">[[${cita.link}]]</a>
+									</h5>
+								</div>
+							</th:block>
 							<div class="detail-item">
 								<h5>
 									<i class="bi bi-check-circle"></i> <strong>Estado:</strong>
@@ -96,7 +104,7 @@
 								<a th:href="@{/user/citasPasadas}" class="btn btn-secondary">Regresar</a>
 							</th:block>
 							<div class="d-grid" th:if="${cita.estado == 'PENDIENTE'}">
-								<a th:href="@{/user/historial/eliminar/}+${cita.id}"
+								<a th:href="@{/user/cita/eliminar/}+${cita.id}"
 									class="btn btn-danger"
 									onclick="return confirm('¿Estás seguro que quieres eliminar esta cita?');">Cancelar
 									Cita</a>

@@ -89,6 +89,12 @@ public class PrincipalController {
 	// save user
 	@PostMapping("/registrar")
 	public String saveUser(@ModelAttribute User user, HttpSession session) throws IOException {
+		User userByEmail = userService.getUserByEmail(user.getEmail());
+		if (!ObjectUtils.isEmpty(userByEmail)) {
+			session.setAttribute("errorMsg", "Usuario ya registrado");
+			return "redirect:/signin";
+		}
+		
 		
 		User saveUser = userService.saveUser(user);
 		if (!ObjectUtils.isEmpty(saveUser)) {
@@ -351,5 +357,6 @@ public class PrincipalController {
 
 		return "redirect:/user/reservar";
 	}
+	
 
 }
