@@ -16,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -356,6 +357,12 @@ public class PrincipalController {
 		// citaService.guardarCita(cita);
 
 		return "redirect:/user/reservar";
+	}
+	
+	@GetMapping("/verProducto/{id}")
+	public String verProducto(@PathVariable Long id, Model model) {
+		model.addAttribute("producto", productoService.getProductoById(id));
+		return "verProducto";
 	}
 	
 

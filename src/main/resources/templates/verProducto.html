@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="~http://www.thymeleaf.org"
+	th:replace="~{user/base_user::Layout(~{::section})}">
+
+<head>
+<meta charset="UTF-8">
+<title></title>
+</head>
+
+<body>
+	 <section class="container mt-5 mb-5 cuadroPrincipal">
+        <div class="row justify-content-center" style="margin-top: 70px; margin-bottom: 100px">
+            <div class="col-md-10 p-5 bg-light rounded shadow">
+                <div class="row g-4">
+
+                    <!-- Notificaciones -->
+                    <th:block th:if="${session.succMsg}">
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <i class="fa-solid fa-check-circle me-2"></i> [[${session.succMsg}]]
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            <th:block th:text="${@commomServiceImpl.removeSessionMessage()}"></th:block>
+                        </div>
+                    </th:block>
+
+                    <th:block th:if="${session.errorMsg}">
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <i class="fa-solid fa-exclamation-triangle me-2"></i> [[${session.errorMsg}]]
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            <th:block th:text="${@commomServiceImpl.removeSessionMessage()}"></th:block>
+                        </div>
+                    </th:block>
+
+                    <!-- Imagen del producto -->
+                    <div class="col-md-5 text-center">
+                        <img th:src="@{'/img/producto_img/' + ${producto.imagen}}" class="img-fluid rounded" alt="Imagen del producto" style="max-height: 400px;">
+                    </div>
+
+                    <!-- Información del producto -->
+                    <div class="col-md-7">
+                        <h2 class="mb-3 fw-bold">[[${producto.nombre}]]</h2>
+                        <p><strong>Descripción:</strong><br>[[${producto.descripcion}]]</p>
+
+                        <p>
+                            <strong>Detalles del Producto:</strong><br>
+                            Estado:
+                            <th:block th:if="${producto.stock > 0}">
+                                <span class="badge bg-success">Disponible</span>
+                            </th:block>
+                            <th:block th:unless="${producto.stock > 0}">
+                                <span class="badge bg-danger">Agotado</span>
+                            </th:block>
+                            <br>
+                            <strong>Categoría:</strong> [[${producto.categoria.nombre}]]<br>
+                            <strong>Stock Disponible:</strong> [[${producto.stock}]] unidades<br>
+                            <strong>Política:</strong> 7 días de devolución y reemplazo
+                        </p>
+
+                        <p class="fs-4 fw-bold">
+                            Precio: <i class="fas fa-dollar-sign"></i> [[${producto.precioDescuento}]]
+                            <span class="fs-6 text-decoration-line-through text-secondary">[[${producto.precio}]]</span>
+                            <span class="fs-6 text-success">([[${producto.descuento}]]% de descuento)</span>
+                        </p>
+
+                        <!-- Formulario para seleccionar cantidad y agregar al carrito -->
+                        <form th:action="@{'/user/addCart'}" method="get">
+                            <input type="hidden" name="pid" th:value="${producto.id}">
+                            <input type="hidden" name="uid" th:value="${user != null ? user.id : ''}">
+
+                            <div class="mb-3">
+                                <label for="cantidad" class="form-label fw-bold">Cantidad:</label>
+                                <input type="number" id="cantidad" name="cantidad" class="form-control w-25 d-inline" min="1" th:max="${producto.stock}" value="1" required>
+                                <span class="ms-2">Stock: [[${producto.stock}]] unidades disponibles</span>
+                            </div>
+
+                            <th:block th:if="${producto.stock > 0}">
+                                <button type="submit" class="btn btn-success w-100">
+                                    <i class="fas fa-cart-plus me-2"></i> Agregar al Carrito
+                                </button>
+                            </th:block>
+
+                            <th:block th:unless="${producto.stock > 0}">
+                                <button class="btn btn-warning w-100" disabled>Producto Agotado</button>
+                            </th:block>
+                            <!-- Botón para enviar detalles por WhatsApp -->
+<div class="mt-3">
+    <a th:href="'https://wa.me/?text=' + ${#strings.replace('Nombre del producto: ' + producto.nombre + 
+            '%0ADescripción: ' + producto.descripcion + 
+            '%0ACategoría: ' + producto.categoria.nombre + 
+            '%0APrecio: $' + producto.precioDescuento + 
+            '%0ADescuento: ' + producto.descuento + '%%' + 
+            '%0AStock disponible: ' + producto.stock + ' unidades', ' ', '%20')}"
+       class="btn btn-primary w-100" target="_blank">
+        <i class="fab fa-whatsapp me-2"></i> Compartir por WhatsApp
+    </a>
+</div>
+                            
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</body>
+
+</html>
